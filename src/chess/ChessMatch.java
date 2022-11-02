@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import application.Program;
-import application.UI;
 import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
@@ -18,11 +17,13 @@ import chess.pieces.Rook;
 
 public class ChessMatch {
 	private Board board;
+	private Color winner;
 	private int turn;
 	private Color currentPlayer;
 	private boolean check; // is false by default
 	private boolean checkMate;
 	private ChessPiece enPassantVulnerable;
+	
 
 	private List<Piece> piecesOnTheBoard = new ArrayList<>();
 	private List<Piece> capturedPieces = new ArrayList<>();
@@ -97,7 +98,7 @@ public class ChessMatch {
 		if (movedPiece instanceof Pawn pawn) {
 			if (target.getRow() == 0 || target.getRow() == 7) {
 				ChessPiece pawnBackup = pawn.clone();
-				String type = Program.chosePieceType(); // I don´t like it
+				String type = Program.chosePieceTypeToPromotion(); // I don´t like it
 				movedPiece = replacePromotedPiece(movedPiece, type);
 				if (testCheck(currentPlayer)) {
 					undoMove(source, target, capturedPiece);
@@ -129,9 +130,13 @@ public class ChessMatch {
 		if (this.check) {
 			this.checkMate = testCheckMate(opponent(currentPlayer));
 		}
+		
 		if (!this.checkMate) {
 			nextTurn();
+		} else {
+			winner = currentPlayer;
 		}
+		
 		return (ChessPiece) capturedPiece;
 	}
 
@@ -219,7 +224,7 @@ public class ChessMatch {
 			if ((pawn.getColor() == Color.WHITE && pawn.getPosition().getRow() == 3)
 					|| (pawn.getColor() == Color.BLACK && pawn.getPosition().getRow() == 4)) {
 				pawn = (Pawn) board.removePiece(target);
-				
+
 				if (piece.getColor() == Color.WHITE) {
 					board.placePiece(pawn, new Position(3, target.getColumn()));
 				} else {
@@ -259,8 +264,7 @@ public class ChessMatch {
 				return king;
 			}
 		}
-		throw new IllegalStateException(
-				"There is no " + UI.getUIColor(color, UI.FontType.PLAIN) + color + UI.RESET + " king on the board");
+		throw new IllegalStateException("There is no " + color + " king on the board");
 	}
 
 	public void validadePossibleMoves(boolean[][] pm, Position source) {
@@ -359,5 +363,9 @@ public class ChessMatch {
 		placeNewPiece('f', 7, new Pawn(board, this, Color.BLACK));
 		placeNewPiece('g', 7, new Pawn(board, this, Color.BLACK));
 		placeNewPiece('h', 7, new Pawn(board, this, Color.BLACK));
+	}
+
+	public Color getWinner() {
+		return winner;
 	}
 }

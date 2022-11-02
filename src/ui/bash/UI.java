@@ -1,4 +1,4 @@
-package application;
+package ui.bash;
 
 import java.util.Arrays;
 import java.util.InputMismatchException;
@@ -16,29 +16,6 @@ public class UI {
 	public enum FontType {
 		PLAIN, BOLD, UNDERLINED, BRIGHT, BACKGROUND, BOLD_BRIGHT, BACKGROUNG_BRIGHT
 	}
-
-//	// Reset
-//	public static final String RESET = "\033[0m"; // Text Reset
-//
-//	// Regular Colors
-//	public static final String BLACK = "\033[0;30m"; // BLACK
-//	public static final String RED = "\033[0;31m"; // RED
-//	public static final String GREEN = "\033[0;32m"; // GREEN
-//	public static final String YELLOW = "\033[0;33m"; // YELLOW
-//	public static final String BLUE = "\033[0;34m"; // BLUE
-//	public static final String PURPLE = "\033[0;35m"; // PURPLE
-//	public static final String CYAN = "\033[0;36m"; // CYAN
-//	public static final String WHITE = "\033[0;37m"; // WHITE
-//	
-//	// Background
-//	public static final String BLACK_BACKGROUND = "\033[40m"; // BLACK
-//	public static final String RED_BACKGROUND = "\033[41m"; // RED
-//	public static final String GREEN_BACKGROUND = "\033[42m"; // GREEN
-//	public static final String YELLOW_BACKGROUND = "\033[43m"; // YELLOW
-//	public static final String BLUE_BACKGROUND = "\033[44m"; // BLUE
-//	public static final String PURPLE_BACKGROUND = "\033[45m"; // PURPLE
-//	public static final String CYAN_BACKGROUND = "\033[46m"; // CYAN
-//	public static final String WHITE_BACKGROUND = "\033[47m"; // WHITE
 
 	// Bold
 	public static final String BLACK_BOLD = "\033[1;30m"; // BLACK
@@ -124,6 +101,24 @@ public class UI {
 			throw new InputMismatchException("Error reading ChessPosition. Valid values are from a1 to h8");
 		}
 	}
+	
+	public static void printMatch(ChessMatch chessMatch, List<ChessPiece> capturedPieces, boolean[][] possibleMoves) {
+		printBoard(chessMatch, possibleMoves);
+		System.out.println();
+		printCapturedPieces(capturedPieces);
+		System.out.println("\nTurn: " + chessMatch.getTurn());
+		if (!chessMatch.getCheckMate()) {
+			System.out.println("Waiting player: " + getUIColor(chessMatch.getCurrentPlayer(), FontType.PLAIN)
+					+ chessMatch.getCurrentPlayer() + RESET);
+			if (chessMatch.getCheck()) {
+				System.out.println(RED + "CHECK!" + RESET);
+			}
+		} else {
+			System.out.println("CHECKMATE!");
+			System.out.println("Winner: " + getUIColor(chessMatch.getCurrentPlayer(), FontType.PLAIN)
+					+ chessMatch.getCurrentPlayer() + RESET);
+		}
+	}
 
 	public static void printMatch(ChessMatch chessMatch, List<ChessPiece> capturedPieces) {
 		printBoard(chessMatch);
@@ -145,15 +140,6 @@ public class UI {
 
 	public static void printBoard(ChessMatch chessMatch) {
 		printBoard(chessMatch, new boolean[chessMatch.getRows()][chessMatch.getColumns()]);
-//		ChessPiece[][] pieces = chessMatch.getPieces();
-//		for (int i = 0; i < pieces.length; i++) {
-//			System.out.printf("%d ", 8 - i);
-//			for (int j = 0; j < pieces[0].length; j++) {
-//				printPiece(pieces[i][j], chessMatch, false);
-//			}
-//			System.out.println();
-//		}
-//		System.out.println("  a b c d e f g h ");
 	}
 
 	public static void printBoard(ChessMatch chessMatch, boolean[][] possibleMovies) {
@@ -177,31 +163,6 @@ public class UI {
 		System.out.println("  a b c d e f g h" + " ".repeat(13) + "h g f e d c b a  ");
 	}
 
-//	public static void printBoard(ChessMatch chessMatch, boolean[][] possibleMovies) {
-//		ChessPiece[][] pieces = chessMatch.getPieces();
-//		for (int i = 0; i < pieces.length; i++) {
-//			// White view
-//			if (chessMatch.getCurrentPlayer() == Color.WHITE) {
-//				System.out.printf("%d ", 8 - i);
-//				for (int j = 0; j < pieces[0].length; j++) {
-//					printPiece(pieces[i][j], chessMatch, possibleMovies[i][j]);
-//				}
-//			} else
-//			// Black view
-//			{
-//				System.out.printf("%d ", i + 1);
-//				for (int j = pieces[0].length - 1; j >= 0; j--) {
-//					printPiece(pieces[7 - i][j], chessMatch, possibleMovies[7 - i][j]);
-//				}
-//			}
-//			System.out.println();
-//		}
-//		if (chessMatch.getCurrentPlayer() == Color.WHITE)
-//			System.out.println("  a b c d e f g h");
-//		else
-//			System.out.println("  h g f e d c b a");
-//	}
-
 	private static void printPiece(ChessPiece piece, ChessMatch chessMatch, boolean highlight) {
 		if (highlight)
 			System.out.print(PURPLE_BACKGROUND);
@@ -210,7 +171,8 @@ public class UI {
 			System.out.print("-");
 		} else {
 			if (chessMatch.testCheck(piece.getColor()) && piece.isThereAnyPossibleMove()) {
-				System.out.print(piece instanceof King ? RED_UNDERLINED : getUIColor(piece.getColor(), FontType.UNDERLINED));
+				System.out.print(
+						piece instanceof King ? RED_UNDERLINED : getUIColor(piece.getColor(), FontType.UNDERLINED));
 			}
 			if (piece instanceof King k && chessMatch.testCheck(k)) {
 				// if it's in check
@@ -230,8 +192,10 @@ public class UI {
 				.collect(Collectors.toList());
 
 		System.out.println("Captured pieces:");
-		System.out.println("White: " + getUIColor(Color.WHITE, FontType.PLAIN) + Arrays.toString(whites.toArray()) + RESET);
-		System.out.println("Black: " + getUIColor(Color.BLACK, FontType.PLAIN) + Arrays.toString(blacks.toArray()) + RESET);
+		System.out.println(
+				"White: " + getUIColor(Color.WHITE, FontType.PLAIN) + Arrays.toString(whites.toArray()) + RESET);
+		System.out.println(
+				"Black: " + getUIColor(Color.BLACK, FontType.PLAIN) + Arrays.toString(blacks.toArray()) + RESET);
 	}
 
 	public static String getUIColor(Color color, FontType type) {

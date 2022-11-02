@@ -3,64 +3,72 @@ package application;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 
 import chess.ChessException;
 import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.ChessPosition;
+import chess.Color;
+import ui.Terminal;
+import ui.bash.BashTerminal;
 
 public class Program {
 
-	private static Scanner sc = new Scanner(System.in);
 	private static ChessMatch chessMatch = new ChessMatch();
 	private static List<ChessPiece> capturedPieces = new ArrayList<>();
+
+	private static Terminal whitePlayer = new BashTerminal(Color.WHITE);
+	private static Terminal blackPlayer = new BashTerminal(Color.WHITE);
+
+	private static Terminal currentPlayer;
 
 	public static void main(String[] args) {
 
 		while (!chessMatch.getCheckMate()) {
 			try {
-				UI.clearScreen();
+				if (chessMatch.getCurrentPlayer() == Color.WHITE) {
+					currentPlayer = whitePlayer;
+				} else {
+					currentPlayer = blackPlayer;
+				}
+
 				ChessPosition source, target;
 				ChessPiece capturedPiece;
-				UI.printMatch(chessMatch, capturedPieces);
+				boolean possibleMovies[][];
 
-				System.out.print("\nOrigem: ");
-				source = UI.readChessPosition(sc);
+//				currentPlayer.printMatch(chessMatch, capturedPieces);
 
-				boolean possibleMovies[][] = chessMatch.possibleMovies(source);
-				UI.clearScreen();
-				UI.printBoard(chessMatch, possibleMovies);
+//				currentPlayer.message("\nSource: ");
+				source = currentPlayer.readSourcePosition(chessMatch, capturedPieces);
 
-				System.out.print("\nDestino: ");
-				target = UI.readChessPosition(sc);
+				possibleMovies = chessMatch.possibleMovies(source);
+
+				target = currentPlayer.readTargetPosition(chessMatch, capturedPieces, possibleMovies);
 
 				capturedPiece = chessMatch.performChessMove(source, target);
+
 				if (capturedPiece != null)
 					capturedPieces.add(capturedPiece);
 
 			} catch (ChessException e) {
-				System.out.println(e.getMessage());
-				sc.nextLine();
+				currentPlayer.message(e.getMessage());
 			} catch (InputMismatchException e) {
-				System.out.println(e.getMessage());
-				sc.nextLine();
+				currentPlayer.message(e.getMessage());
 			}
 		}
-		UI.clearScreen();
-		UI.printMatch(chessMatch, capturedPieces);
+		
+		whitePlayer.finish(chessMatch, capturedPieces, chessMatch.getWinner());
+		blackPlayer.finish(chessMatch, capturedPieces, chessMatch.getWinner());
 	}
 
-	public static String chosePieceType() {
+	public static String chosePieceTypeToPromotion() {
 		while (true) {
-			UI.clearScreen();
-			UI.printBoard(chessMatch);
-			System.out.print("Enter piece for promotion (B/N/R/Q): ");
-			String type = sc.nextLine().toUpperCase();
-			if (type.length() == 1 && "BNQR".contains(type))
+			String type = currentPlayer.chosePieceTypeToPromotion();
+			if (type.length() == 1 && "BNQR".contains(type)) {
 				return type;
-			else
-				System.out.print("Invalid Type! ");
+			} else {
+				currentPlayer.message("Invalid Type! ");
+			}
 		}
 	}
 }
