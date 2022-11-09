@@ -22,13 +22,13 @@ public class BashTerminal extends Terminal {
 	public ChessPosition readSourcePosition(ChessMatch chessMatch, List<ChessPiece> capturedPieces) {
 		UI.clearScreen();
 		UI.printMatch(chessMatch, capturedPieces);
-		System.out.println("\nOrigem: ");
+		System.out.print("\nOrigem: ");
 		try {
 			String s = sc.nextLine();
 			char column = s.charAt(0);
 			int row = Integer.parseInt(s.substring(1));
 			return new ChessPosition(column, row);
-		} catch (InputMismatchException e) {
+		} catch (InputMismatchException | StringIndexOutOfBoundsException e) {
 			throw new InputMismatchException("Error reading ChessPosition. Valid values are from a1 to h8");
 		}
 	}
@@ -38,7 +38,7 @@ public class BashTerminal extends Terminal {
 			boolean[][] possibleMoves) {
 		UI.clearScreen();
 		UI.printMatch(chessMatch, capturedPieces, possibleMoves);
-		System.out.println("\nDestino: ");
+		System.out.print("\nDestino: ");
 		try {
 			String s = sc.nextLine();
 			char column = s.charAt(0);

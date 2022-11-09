@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class Program {
 
 	private static void networkGame() {
 		// TODO Auto-generated method stub
-
+		currentPlayer = whitePlayer;
 	}
 
 	private static void configureNetworkGameAsClient(String[] args) {
@@ -111,8 +112,9 @@ public class Program {
 
 	private static void configureLocalGame(String[] args) {
 		try {
-			for (int i = 1; i < args.length; i++) {
+			for (int i = 0; i < args.length; i++) {
 				if (args[i].equalsIgnoreCase("-p1")) {
+					System.out.println("configurando p1");
 					i++;
 					if (args[i].equalsIgnoreCase("-b")) {
 						i++;
@@ -124,6 +126,7 @@ public class Program {
 						System.out.println("-p1 (-b or -g) namePlayer1 -p2 (-b or -g) namePlayer2");
 					}
 				} else if (args[i].equalsIgnoreCase("-p2")) {
+					System.out.println("configurando p2");
 					i++;
 					if (args[i].equalsIgnoreCase("-b")) {
 						i++;
@@ -135,6 +138,9 @@ public class Program {
 						System.out.println("-p1 (-b or -g) namePlayer1 -p2 (-b or -g) namePlayer2");
 						System.exit(1);
 					}
+				} else {
+					System.out.println("Confira os argumentos: " + Arrays.toString(args));
+					System.exit(1);
 				}
 			}
 		} catch (NullPointerException e) {
@@ -144,7 +150,7 @@ public class Program {
 	}
 
 	private static void localGame() {
-
+		currentPlayer = whitePlayer;
 		while (!chessMatch.getCheckMate()) {
 			try {
 				if (chessMatch.getCurrentPlayer() == Color.WHITE) {

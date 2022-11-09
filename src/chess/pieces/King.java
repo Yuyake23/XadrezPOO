@@ -32,25 +32,6 @@ public class King extends ChessPiece {
 		boolean[][] pm = new boolean[getBoard().getRows()][getBoard().getColumns()];
 		Position p = new Position(0, 0);
 
-//		int v1[] = { +1, -1 };
-//		for (int i : v1) {
-//			p.setValues(position.getRow() + i, position.getColumn());
-//			if (getBoard().positionExists(p) && canMove(p))
-//				pm[p.getRow()][p.getColumn()] = true;
-//
-//			p.setValues(position.getRow(), position.getColumn() + i);
-//			if (getBoard().positionExists(p) && canMove(p))
-//				pm[p.getRow()][p.getColumn()] = true;
-//
-//			p.setValues(position.getRow() + i, position.getColumn() + i);
-//			if (getBoard().positionExists(p) && canMove(p))
-//				pm[p.getRow()][p.getColumn()] = true;
-//
-//			p.setValues(position.getRow() + i, position.getColumn() - i);
-//			if (getBoard().positionExists(p) && canMove(p))
-//				pm[p.getRow()][p.getColumn()] = true;
-//		}
-
 		// north
 		p.setValues(position.getRow() - 1, position.getColumn());
 		if (getBoard().positionExists(p) && canMove(p))
