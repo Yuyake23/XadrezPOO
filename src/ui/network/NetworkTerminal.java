@@ -1,4 +1,7 @@
 package ui.network;
+
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.List;
 
 import chess.ChessMatch;
@@ -9,9 +12,13 @@ import ui.Terminal;
 
 public class NetworkTerminal extends Terminal {
 
-	public NetworkTerminal(Color playerColor) {
-		super(playerColor);
-		// TODO Auto-generated constructor stub
+	private ServerSocket host;
+	private Socket client;
+
+	public NetworkTerminal(Color playerColor, String name, ServerSocket host, Socket client) {
+		super(playerColor, name);
+		this.host = host;
+		this.client = client;
 	}
 
 	@Override

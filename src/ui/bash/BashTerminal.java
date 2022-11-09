@@ -13,8 +13,8 @@ import ui.Terminal;
 public class BashTerminal extends Terminal {
 	private Scanner sc;
 
-	public BashTerminal(Color playerColor) {
-		super(playerColor);
+	public BashTerminal(Color playerColor, String name) {
+		super(playerColor, name);
 		this.sc = new Scanner(System.in);
 	}
 

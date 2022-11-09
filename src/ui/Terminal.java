@@ -9,10 +9,12 @@ import chess.Color;
 
 public abstract class Terminal {
 	
+	protected String name;
 	protected Color playerColor;
 
-	public Terminal(Color playerColor) {
+	public Terminal(Color playerColor, String name) {
 		this.playerColor = playerColor;
+		this.name = name;
 	}
 	
 	public abstract ChessPosition readSourcePosition(ChessMatch chessMatch, List<ChessPiece> capturedPieces);
