@@ -46,4 +46,16 @@ public class GraphicTerminal extends Terminal {
 		
 	}
 
+	@Override
+	public void exceptionMessage(Exception e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(ChessMatch chessMatch, List<ChessPiece> capturedPieces, boolean[][] possibleMoves) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

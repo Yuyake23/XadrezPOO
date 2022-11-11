@@ -1,7 +1,6 @@
 package application;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -17,6 +16,7 @@ import chess.Color;
 import ui.Terminal;
 import ui.bash.BashTerminal;
 import ui.graphic.GraphicTerminal;
+import ui.network.NetworkClient;
 import ui.network.NetworkTerminal;
 
 public class Program {
@@ -28,10 +28,17 @@ public class Program {
 	private static Terminal blackPlayer;
 
 	private static Terminal currentPlayer;
+	private static NetworkClient networkClient;
+
+	/**
+	 * TODO Estudar interface Serializable
+	 * 
+	 * @param args
+	 */
 
 	public static void main(String[] args) {
 		boolean rede = false;
-		char hostOrServer = ' ';
+		char hostOrClient = ' ';
 
 		/*
 		 * -nh : Host -nc : Client
@@ -43,9 +50,9 @@ public class Program {
 		} else if (args[0].contains("-n")) {
 			rede = true;
 			if (args[0].equalsIgnoreCase("-nh")) {
-				hostOrServer = 'h';
+				hostOrClient = 'h';
 			} else if (args[0].equals("-nc")) {
-				hostOrServer = 'c';
+				hostOrClient = 'c';
 			}
 		}
 
@@ -53,7 +60,7 @@ public class Program {
 			configureLocalGame(args);
 			localGame();
 		} else {
-			switch (hostOrServer) {
+			switch (hostOrClient) {
 				case 'h' -> {
 					configureNetworkGameAsHost(args);
 					localGame();
@@ -63,19 +70,48 @@ public class Program {
 					networkGame();
 				}
 
-				default -> throw new IllegalArgumentException("Unexpected value: " + hostOrServer);
+				default -> throw new IllegalArgumentException("Unexpected value: " + hostOrClient);
 			}
 		}
 	}
 
 	private static void networkGame() {
-		// TODO Auto-generated method stub
-		currentPlayer = whitePlayer;
+		networkClient.start();
 	}
 
 	private static void configureNetworkGameAsClient(String[] args) {
-		// TODO Auto-generated method stub
+		try {
+			Terminal localTerminal = null;
+			String socket = args[1];
+			String name = null;
+			if (!args[2].equalsIgnoreCase("-p2")) {
+				System.out.println("-nc ip:porta -p2 (-b or -g) name");
+				System.exit(1);
+			} else {
+				name = args[4];
+				if (args[3].equalsIgnoreCase("-b")) {
+					localTerminal = new BashTerminal(Color.BLACK, name);
+				} else if (args[3].equalsIgnoreCase("-g")) {
+					localTerminal = new GraphicTerminal(Color.BLACK, name);
+				} else {
+					System.out.println("-nc ip:porta -p2 (-b or -g) name");
+					System.exit(1);
+				}
+			}
+			Socket client = new Socket(socket.split(":")[0], Integer.parseInt(socket.split(":")[1]));
+//			ObjectOutputStream saida = new ObjectOutputStream(client.getOutputStream());
+//			saida.writeObject(name);
+//			saida.close();
 
+			networkClient = new NetworkClient(localTerminal, client);
+
+		} catch (IOException e) {
+			System.out.println("Program.configureNetworkGameAsClient()");
+			e.printStackTrace();
+		} catch (IndexOutOfBoundsException | NullPointerException e) {
+			System.out.println("-nc ip:porta -p2 (-b or -g) name");
+			System.exit(1);
+		}
 	}
 
 	private static void configureNetworkGameAsHost(String[] args) {
@@ -96,14 +132,15 @@ public class Program {
 			Socket client = host.accept();
 			System.out.println("Cliente conectado: " + client.getInetAddress().getHostAddress());
 
-			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
-			String clientName = entrada.readObject().toString();
-			entrada.close();
+//			ObjectInputStream entrada = new ObjectInputStream(client.getInputStream());
+//			String clientName = entrada.readObject().toString();
+//			entrada.close();
+			String clientName = "jubiscreia";
 
 			whitePlayer.message("Nome do cliente: " + clientName);
 			Program.blackPlayer = new NetworkTerminal(Color.BLACK, clientName, host, client);
 
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (IOException e) {
 			whitePlayer.message("Deu problema com a conexão com o cliente");
 			e.printStackTrace();
 			System.exit(2);
@@ -153,6 +190,9 @@ public class Program {
 		currentPlayer = whitePlayer;
 		while (!chessMatch.getCheckMate()) {
 			try {
+				currentPlayer.update(chessMatch, capturedPieces, null);
+				opponent(currentPlayer).update(chessMatch, capturedPieces, null);
+				
 				if (chessMatch.getCurrentPlayer() == Color.WHITE) {
 					currentPlayer = whitePlayer;
 				} else {
@@ -164,20 +204,18 @@ public class Program {
 				boolean possibleMovies[][];
 
 				source = currentPlayer.readSourcePosition(chessMatch, capturedPieces);
-
 				possibleMovies = chessMatch.possibleMovies(source);
-
+				opponent(currentPlayer).update(chessMatch, capturedPieces, possibleMovies);
+				
 				target = currentPlayer.readTargetPosition(chessMatch, capturedPieces, possibleMovies);
-
+				
 				capturedPiece = chessMatch.performChessMove(source, target);
 
 				if (capturedPiece != null)
 					capturedPieces.add(capturedPiece);
 
-			} catch (ChessException e) {
-				currentPlayer.message(e.getMessage());
-			} catch (InputMismatchException e) {
-				currentPlayer.message(e.getMessage());
+			} catch (InputMismatchException | NumberFormatException | ChessException e) {
+				currentPlayer.exceptionMessage(e);
 			}
 		}
 
@@ -194,5 +232,9 @@ public class Program {
 				currentPlayer.message("Invalid Type! ");
 			}
 		}
+	}
+	
+	private static Terminal opponent(Terminal a) {
+		return a == blackPlayer ? whitePlayer : blackPlayer;
 	}
 }

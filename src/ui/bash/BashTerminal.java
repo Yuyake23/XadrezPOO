@@ -74,4 +74,20 @@ public class BashTerminal extends Terminal {
 		}
 	}
 
+	@Override
+	public void exceptionMessage(Exception e) {
+		System.err.println(UI.RED + e.getMessage() + UI.RESET);
+	}
+
+	@Override
+	public void update(ChessMatch chessMatch, List<ChessPiece> capturedPieces, boolean[][] possibleMoves) {
+		UI.clearScreen();
+		if (possibleMoves != null) {
+			UI.printMatch(chessMatch, capturedPieces, possibleMoves);
+		} else {
+			UI.printMatch(chessMatch, capturedPieces);
+		}
+
+	}
+
 }

@@ -1,10 +1,16 @@
 package chess;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
 
-public abstract class ChessPiece extends Piece {
+public abstract class ChessPiece extends Piece implements Serializable{
+	@Serial
+	private static final long serialVersionUID = 692329559904442530L;
+	
 	protected Color color;
 	protected int moveCount;
 

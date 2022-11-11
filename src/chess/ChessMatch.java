@@ -1,5 +1,7 @@
 package chess;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,7 +17,10 @@ import chess.pieces.Pawn;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
 
-public class ChessMatch {
+public class ChessMatch implements Serializable{
+	@Serial
+	private static final long serialVersionUID = 2272696391384483565L;
+	
 	private Board board;
 	private Color winner;
 	private int turn;

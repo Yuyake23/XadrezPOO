@@ -8,7 +8,7 @@ import chess.ChessPosition;
 import chess.Color;
 
 public abstract class Terminal {
-	
+
 	protected String name;
 	protected Color playerColor;
 
@@ -16,7 +16,7 @@ public abstract class Terminal {
 		this.playerColor = playerColor;
 		this.name = name;
 	}
-	
+
 	public abstract ChessPosition readSourcePosition(ChessMatch chessMatch, List<ChessPiece> capturedPieces);
 
 	public abstract ChessPosition readTargetPosition(ChessMatch chessMatch, List<ChessPiece> capturedPieces,
@@ -26,6 +26,9 @@ public abstract class Terminal {
 
 	public abstract void message(String s);
 
+	public abstract void exceptionMessage(Exception e);
+
 	public abstract void finish(ChessMatch chessMatch, List<ChessPiece> capturedPieces, Color winner);
 
+	public abstract void update(ChessMatch chessMatch, List<ChessPiece> capturedPieces, boolean[][] possibleMoves);
 }

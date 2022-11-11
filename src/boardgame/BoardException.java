@@ -1,7 +1,11 @@
 package boardgame;
 
-public class BoardException extends RuntimeException {
-	private static final long serialVersionUID = 1L;
+import java.io.Serial;
+import java.io.Serializable;
+
+public class BoardException extends RuntimeException implements Serializable {
+	@Serial
+	private static final long serialVersionUID = 5387442010037533494L;
 
 	public BoardException(String msg) {
 		super(msg);

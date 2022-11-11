@@ -1,8 +1,14 @@
 package boardgame;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import chess.ChessMatch;
 
-public abstract class Piece {
+public abstract class Piece implements Serializable{
+	@Serial
+	private static final long serialVersionUID = -6453738799351240322L;
+	
 	protected Position position;
 	protected ChessMatch chessMatch;
 	private Board board;

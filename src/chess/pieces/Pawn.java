@@ -1,5 +1,7 @@
 package chess.pieces;
 
+import java.io.Serial;
+
 import boardgame.Board;
 import boardgame.Position;
 import chess.ChessMatch;
@@ -7,7 +9,9 @@ import chess.ChessPiece;
 import chess.Color;
 
 public class Pawn extends ChessPiece {
-
+	@Serial
+	private static final long serialVersionUID = -5449357388923766191L;
+	
 	public Pawn(Board board, ChessMatch chessMatch, Color color) {
 		super(board, chessMatch, color);
 	}

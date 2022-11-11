@@ -1,8 +1,14 @@
 package chess;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import boardgame.Position;
 
-public class ChessPosition {
+public class ChessPosition implements Serializable {
+	@Serial
+	private static final long serialVersionUID = -5903965210856179209L;
+	
 	private char column;
 	private int row;
 
@@ -29,7 +35,7 @@ public class ChessPosition {
 	protected static ChessPosition fromPosition(Position position) {
 		return new ChessPosition((char) (position.getColumn() + 'a'), 8 - position.getRow());
 	}
-	
+
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		return new ChessPosition(column, row);
