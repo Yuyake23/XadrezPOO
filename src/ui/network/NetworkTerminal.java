@@ -12,6 +12,7 @@ import chess.ChessPiece;
 import chess.ChessPosition;
 import chess.Color;
 import ui.Terminal;
+import ui.network.enums.Description;
 
 public class NetworkTerminal extends Terminal {
 
@@ -40,9 +41,13 @@ public class NetworkTerminal extends Terminal {
 		try {
 //			saida.flush();
 			saida.reset();
-			saida.writeUnshared(new Object[] { Description.READ_SOURCE_POSITION, chessMatch, capturedPieces });
+			saida.writeUnshared(new Object[] { Description.SOURCE_POSITION, chessMatch, capturedPieces });
 //			saida.writeObject(new Object[] { Description.READ_SOURCE_POSITION, chessMatch, capturedPieces });
-			chessPosition = (ChessPosition) entrada.readObject();
+
+			Object[] obj = (Object[]) entrada.readObject();
+			if ((Description) obj[0] == Description.SOURCE_POSITION) {
+				chessPosition = (ChessPosition) obj[1];
+			}
 		} catch (IOException | ClassNotFoundException e) {
 			try {
 				saida.writeUnshared(new Object[] { Description.EXCEPTION, e });
@@ -64,9 +69,13 @@ public class NetworkTerminal extends Terminal {
 //			saida.flush();
 			saida.reset();
 			saida.writeUnshared(
-					new Object[] { Description.READ_TARGET_POSITION, chessMatch, capturedPieces, possibleMoves });
+					new Object[] { Description.TARGET_POSITION, chessMatch, capturedPieces, possibleMoves });
 //			saida.writeObject(new Object[] { Description.READ_TARGET_POSITION, chessMatch, capturedPieces, possibleMoves });
-			chessPosition = (ChessPosition) entrada.readObject();
+
+			Object[] obj = (Object[]) entrada.readObject();
+			if ((Description) obj[0] == Description.TARGET_POSITION) {
+				chessPosition = (ChessPosition) obj[1];
+			}
 		} catch (IOException | ClassNotFoundException e) {
 			try {
 				saida.writeUnshared(new Object[] { Description.EXCEPTION, e });
@@ -80,23 +89,27 @@ public class NetworkTerminal extends Terminal {
 	}
 
 	@Override
-	public String chosePieceTypeToPromotion() {
+	public String chosePieceTypeToPromotion() throws IOException, ClassNotFoundException, NullPointerException {
 		String pieceType = null;
 		try {
 //			saida.flush();
 			saida.reset();
-			saida.writeUnshared(new Object[] { Description.CHOSE_PIECE_TYPE_TO_PROMOTION });
+			saida.writeUnshared(new Object[] { Description.PIECE_TYPE_TO_PROMOTION });
 //			saida.writeObject(new Object[] { Description.CHOSE_PIECE_TYPE_TO_PROMOTION });
-			pieceType = (String) entrada.readObject();
-		} catch (IOException | ClassNotFoundException e) {
+
+			Object[] obj = (Object[]) entrada.readObject();
+			if ((Description) obj[0] == Description.PIECE_TYPE_TO_PROMOTION) {
+				pieceType = (String) obj[1];
+			}
+		} catch (IOException | ClassNotFoundException | NullPointerException e) {
 			try {
+				saida.reset();
 				saida.writeUnshared(new Object[] { Description.EXCEPTION, e });
 //				saida.writeObject(new Object[] {Description.EXCEPTION, e});
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				throw e;
 			}
-			e.printStackTrace();
-			System.exit(3);
+			throw e;
 		}
 		return pieceType;
 	}
@@ -163,8 +176,7 @@ public class NetworkTerminal extends Terminal {
 		try {
 //			saida.flush();
 			saida.reset();
-			saida.writeUnshared(
-					new Object[] { Description.UPDATE, chessMatch, capturedPieces, possibleMoves });
+			saida.writeUnshared(new Object[] { Description.UPDATE, chessMatch, capturedPieces, possibleMoves });
 //			saida.writeObject(new Object[] { Description.READ_TARGET_POSITION, chessMatch, capturedPieces, possibleMoves });
 		} catch (IOException e) {
 			e.printStackTrace();
