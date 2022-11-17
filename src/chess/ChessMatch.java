@@ -17,10 +17,10 @@ import chess.pieces.Pawn;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
 
-public class ChessMatch implements Serializable{
+public class ChessMatch implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 2272696391384483565L;
-	
+
 	private Board board;
 	private Color winner;
 	private int turn;
@@ -28,7 +28,6 @@ public class ChessMatch implements Serializable{
 	private boolean check; // is false by default
 	private boolean checkMate;
 	private ChessPiece enPassantVulnerable;
-	
 
 	private List<Piece> piecesOnTheBoard = new ArrayList<>();
 	private List<Piece> capturedPieces = new ArrayList<>();
@@ -70,9 +69,11 @@ public class ChessMatch implements Serializable{
 
 	public ChessPiece[][] getPieces() {
 		ChessPiece[][] chessPieces = new ChessPiece[board.getRows()][board.getColumns()];
-		for (int i = 0; i < board.getRows(); i++)
-			for (int j = 0; j < board.getColumns(); j++)
+		for (int i = 0; i < board.getRows(); i++) {
+			for (int j = 0; j < board.getColumns(); j++) {
 				chessPieces[i][j] = (ChessPiece) board.piece(i, j);
+			}
+		}
 
 		return chessPieces;
 	}
@@ -80,15 +81,7 @@ public class ChessMatch implements Serializable{
 	public boolean[][] possibleMovies(ChessPosition sourcePosition) {
 		Position position = sourcePosition.toPosition();
 		validateSourcePosition(position);
-		boolean[][] pm = board.piece(position).getPossibleMoves();
-		for (int i = 0; i < pm.length; i++) {
-			for (int j = 0; j < pm[i].length; j++) {
-				if (pm[i][j]) {
-
-				}
-			}
-		}
-		return pm;
+		return board.piece(position).getPossibleMoves();
 	}
 
 	public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
@@ -115,19 +108,15 @@ public class ChessMatch implements Serializable{
 
 		if (testCheck(currentPlayer)) {
 			undoMove(source, target, capturedPiece);
-			if (check)
-				throw new ChessException("You must defend your king");
-			else
-				throw new ChessException("You can't put yourself in check");
+			throw new ChessException(check ? "You must defend your king" : "You can't put yourself in check");
 		}
 
 		// #specialmove en passant
-		if (movedPiece instanceof Pawn) {
-			if (source.getRow() - 2 == target.getRow() || source.getRow() + 2 == target.getRow()) {
-				this.enPassantVulnerable = movedPiece;
-			} else {
-				this.enPassantVulnerable = null;
-			}
+		if (movedPiece instanceof Pawn && source.getRow() - 2 == target.getRow()
+				|| source.getRow() + 2 == target.getRow()) {
+			this.enPassantVulnerable = movedPiece;
+		} else {
+			this.enPassantVulnerable = null;
 		}
 
 		this.check = testCheck(opponent(currentPlayer));
@@ -135,13 +124,13 @@ public class ChessMatch implements Serializable{
 		if (this.check) {
 			this.checkMate = testCheckMate(opponent(currentPlayer));
 		}
-		
-		if (!this.checkMate) {
-			nextTurn();
-		} else {
+
+		if (this.checkMate) {
 			winner = currentPlayer;
+		} else {
+			nextTurn();
 		}
-		
+
 		return (ChessPiece) capturedPiece;
 	}
 
@@ -269,24 +258,25 @@ public class ChessMatch implements Serializable{
 				return king;
 			}
 		}
+
 		throw new IllegalStateException("There is no " + color + " king on the board");
 	}
 
 	public void validadePossibleMoves(boolean[][] pm, Position source) {
 		for (int i = 0; i < pm.length; i++) {
 			for (int j = 0; j < pm[i].length; j++) {
-				if (pm[i][j]) {
-					if (thisMovePutCurrentPlayerInCheck(source, new Position(i, j)))
-						pm[i][j] = false;
+				if (pm[i][j] && putCurrentPlayerInCheck(source, new Position(i, j))) {
+					pm[i][j] = false;
 				}
 			}
 		}
 	}
 
-	private boolean thisMovePutCurrentPlayerInCheck(Position source, Position target) {
+	private boolean putCurrentPlayerInCheck(Position source, Position target) {
 		Piece capturedPiece = makeMove(source, target);
 		boolean check = testCheck(currentPlayer);
 		undoMove(source, target, capturedPiece);
+		
 		return check;
 	}
 
@@ -303,6 +293,7 @@ public class ChessMatch implements Serializable{
 				return true;
 			}
 		}
+		
 		return false;
 	}
 
@@ -320,12 +311,14 @@ public class ChessMatch implements Serializable{
 						Piece capturedPiece = makeMove(source, target);
 						boolean remainsInCheck = testCheck(color);
 						undoMove(source, target, capturedPiece);
-						if (!remainsInCheck)
+						if (!remainsInCheck) {
 							return false;
+						}
 					}
 				}
 			}
 		}
+		
 		return true;
 	}
 

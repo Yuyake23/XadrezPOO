@@ -15,17 +15,18 @@ import ui.network.NetworkClient;
 import ui.network.NetworkTerminal;
 
 public class Program {
+	private static enum GameType {
+		local, client, host
+	}
 
 	private static Terminal whitePlayer;
 	private static Terminal blackPlayer;
 
 	private static NetworkClient networkClient;
-	
 	private static Game game;
 
 	public static void main(String[] args) {
-		boolean rede = false;
-		char hostOrClient = ' ';
+		GameType gameType = GameType.local;
 
 		/*
 		 * -nh : Host -nc : Client
@@ -35,33 +36,26 @@ public class Program {
 			System.err.println("Quais são os argumentos, querido?");
 			System.exit(1);
 		} else if (args[0].contains("-n")) {
-			rede = true;
 			if (args[0].equalsIgnoreCase("-nh")) {
-				hostOrClient = 'h';
+				gameType = GameType.host;
 			} else if (args[0].equals("-nc")) {
-				hostOrClient = 'c';
+				gameType = GameType.client;
 			}
 		}
 
-		if (!rede) {
+		if (gameType == GameType.local ) {
 			configureLocalGame(args);
-		} else {
-			switch (hostOrClient) {
-				case 'h' -> {
-					configureNetworkGameAsHost(args);
-				}
-				case 'c' -> {
-					configureNetworkGameAsClient(args);
-					try {
-						networkClient.start();
-					} catch (SocketException e) {
-						System.out.println(e.getMessage());
-					}
-				}
-
-				default -> throw new IllegalArgumentException("Unexpected value: " + hostOrClient);
+		} else if (gameType == GameType.host) {
+			configureNetworkGameAsHost(args);
+		} else if (gameType == GameType.client) {
+			configureNetworkGameAsClient(args);
+			try {
+				networkClient.start();
+			} catch (SocketException e) {
+				System.out.println(e.getMessage());
 			}
 		}
+
 	}
 
 	private static void configureNetworkGameAsClient(String[] args) {
@@ -84,8 +78,6 @@ public class Program {
 				}
 			}
 			Socket client = new Socket(socket.split(":")[0], Integer.parseInt(socket.split(":")[1]));
-
-			networkClient = new NetworkClient(localTerminal, client);
 
 			Program.game = new ClientGame(localTerminal, client);
 		} catch (ConnectException e) {
@@ -111,8 +103,7 @@ public class Program {
 		}
 		try {
 			ServerSocket host = new ServerSocket(0);
-			whitePlayer.message("Servidor " + host.getInetAddress().getHostAddress() + ":" + host.getLocalPort()
-					+ " esperando cliente");
+			whitePlayer.message("Servidor na porta " + host.getLocalPort() + " esperando cliente");
 
 			Socket client = host.accept();
 			System.out.println("Cliente conectado: " + client.getInetAddress().getHostAddress());
@@ -127,7 +118,7 @@ public class Program {
 			e.printStackTrace();
 			System.exit(2);
 		}
-		
+
 		Program.game = new HostGame(whitePlayer, blackPlayer);
 	}
 
@@ -168,7 +159,7 @@ public class Program {
 			System.out.println("-p1 (-b or -g) namePlayer1 -p2 (-b or -g) namePlayer2");
 			System.exit(1);
 		}
-		
+
 		Program.game = new LocalGame(whitePlayer, whitePlayer.getName(), blackPlayer.getName());
 	}
 
