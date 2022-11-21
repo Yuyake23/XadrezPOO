@@ -2,6 +2,7 @@ package application;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
@@ -40,7 +41,7 @@ public class Program {
 			}
 		}
 
-		if (gameType == GameType.local ) {
+		if (gameType == GameType.local) {
 			configureLocalGame(args);
 		} else if (gameType == GameType.host) {
 			configureNetworkGameAsHost(args);
@@ -95,7 +96,9 @@ public class Program {
 		}
 		try {
 			ServerSocket host = new ServerSocket(0);
-			whitePlayer.message("Servidor na porta " + host.getLocalPort() + " esperando cliente");
+
+			whitePlayer.message("Servidor %s:%d esperando cliente"
+					.formatted(InetAddress.getLocalHost().getHostAddress(), host.getLocalPort()));
 
 			Socket client = host.accept();
 			System.out.println("Cliente conectado: " + client.getInetAddress().getHostAddress());
