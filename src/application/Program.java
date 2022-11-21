@@ -4,14 +4,12 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.Arrays;
 
 import chess.Color;
 import ui.Terminal;
 import ui.bash.BashTerminal;
 import ui.graphic.GraphicTerminal;
-import ui.network.NetworkClient;
 import ui.network.NetworkTerminal;
 
 public class Program {
@@ -22,7 +20,6 @@ public class Program {
 	private static Terminal whitePlayer;
 	private static Terminal blackPlayer;
 
-	private static NetworkClient networkClient;
 	private static Game game;
 
 	public static void main(String[] args) {
@@ -49,11 +46,6 @@ public class Program {
 			configureNetworkGameAsHost(args);
 		} else if (gameType == GameType.client) {
 			configureNetworkGameAsClient(args);
-			try {
-				networkClient.start();
-			} catch (SocketException e) {
-				System.out.println(e.getMessage());
-			}
 		}
 
 	}
