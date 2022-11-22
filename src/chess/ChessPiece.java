@@ -7,15 +7,17 @@ import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
 
-public abstract class ChessPiece extends Piece implements Serializable{
+public abstract class ChessPiece extends Piece implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 692329559904442530L;
-	
+
 	protected Color color;
+	protected ChessMatch chessMatch;
 	protected int moveCount;
 
 	public ChessPiece(Board board, ChessMatch chessMatch, Color color) {
-		super(board, chessMatch);
+		super(board);
+		this.chessMatch = chessMatch;
 		this.color = color;
 	}
 
@@ -35,15 +37,22 @@ public abstract class ChessPiece extends Piece implements Serializable{
 		moveCount--;
 	}
 
+	// hook method
+	public boolean[][] getPossibleMoves() {
+		boolean[][] pm = getAllPossibleMoves();
+		chessMatch.validadePossibleMoves(pm, position);
+		return pm;
+	}
+
 	public ChessPosition getChessPosition() {
 		return ChessPosition.fromPosition(position);
 	}
 
 	protected boolean isThereOpponentPiece(Position position) {
-		ChessPiece p = (ChessPiece) getBoard().piece(position);
+		ChessPiece p = (ChessPiece) getBoard().getPiece(position);
 		return p != null && !p.getColor().equals(color);
 	}
 
 	public abstract boolean[][] getAllPossibleMoves();
-	
+
 }

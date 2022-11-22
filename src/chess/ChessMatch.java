@@ -71,7 +71,7 @@ public class ChessMatch implements Serializable {
 		ChessPiece[][] chessPieces = new ChessPiece[board.getRows()][board.getColumns()];
 		for (int i = 0; i < board.getRows(); i++) {
 			for (int j = 0; j < board.getColumns(); j++) {
-				chessPieces[i][j] = (ChessPiece) board.piece(i, j);
+				chessPieces[i][j] = (ChessPiece) board.getPiece(i, j);
 			}
 		}
 
@@ -81,7 +81,7 @@ public class ChessMatch implements Serializable {
 	public boolean[][] possibleMovies(ChessPosition sourcePosition) {
 		Position position = sourcePosition.toPosition();
 		validateSourcePosition(position);
-		return board.piece(position).getPossibleMoves();
+		return board.getPiece(position).getPossibleMoves();
 	}
 
 	public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
@@ -90,7 +90,7 @@ public class ChessMatch implements Serializable {
 		validateSourcePosition(source);
 		validateTargetPosition(source, target);
 		Piece capturedPiece = makeMove(source, target);
-		ChessPiece movedPiece = (ChessPiece) board.piece(target);
+		ChessPiece movedPiece = (ChessPiece) board.getPiece(target);
 
 		// #specialmove promotion
 		if (movedPiece instanceof Pawn pawn) {
@@ -232,14 +232,14 @@ public class ChessMatch implements Serializable {
 	private void validateSourcePosition(Position source) {
 		if (!board.thereIsAPiece(source))
 			throw new ChessException("There is no piece on source position");
-		if (currentPlayer != ((ChessPiece) board.piece(source)).getColor())
+		if (currentPlayer != ((ChessPiece) board.getPiece(source)).getColor())
 			throw new ChessException("The chose piece is not yours");
-		if (!board.piece(source).isThereAnyPossibleMove())
+		if (!board.getPiece(source).isThereAnyPossibleMove())
 			throw new ChessException("There is no possible moves for the chosen piece");
 	}
 
 	private void validateTargetPosition(Position source, Position target) {
-		if (!board.piece(source).possibleMove(target))
+		if (!board.getPiece(source).possibleMove(target))
 			throw new ChessException("The chosen piece can't move to target position");
 	}
 

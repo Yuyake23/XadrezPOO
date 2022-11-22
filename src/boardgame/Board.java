@@ -27,13 +27,13 @@ public class Board implements Serializable{
 		return columns;
 	}
 
-	public Piece piece(int row, int column) {
+	public Piece getPiece(int row, int column) {
 		if (!positionExists(row, column))
 			throw new BoardException("Position are not on the board");
 		return pieces[row][column];
 	}
 
-	public Piece piece(Position position) {
+	public Piece getPiece(Position position) {
 		if (!positionExists(position))
 			throw new BoardException("Position are not on the board");
 		return pieces[position.getRow()][position.getColumn()];
@@ -50,7 +50,7 @@ public class Board implements Serializable{
 		if (!positionExists(position))
 			throw new BoardException("Position are not on the board");
 
-		Piece a = piece(position);
+		Piece a = getPiece(position);
 		if (a == null)
 			return null;
 		a.position = null;
@@ -69,6 +69,6 @@ public class Board implements Serializable{
 	public boolean thereIsAPiece(Position position) {
 		if (!positionExists(position))
 			throw new BoardException("Position are not on the board");
-		return piece(position) != null;
+		return getPiece(position) != null;
 	}
 }

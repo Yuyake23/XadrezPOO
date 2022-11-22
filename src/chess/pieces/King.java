@@ -22,12 +22,12 @@ public class King extends ChessPiece {
 	}
 
 	private boolean canMove(Position position) {
-		ChessPiece chessPiece = (ChessPiece) getBoard().piece(position);
+		ChessPiece chessPiece = (ChessPiece) getBoard().getPiece(position);
 		return chessPiece == null || !chessPiece.getColor().equals(this.getColor());
 	}
 
 	private boolean testRookCastling(Position position) {
-		ChessPiece p = (ChessPiece) getBoard().piece(position);
+		ChessPiece p = (ChessPiece) getBoard().getPiece(position);
 		return p != null && p instanceof Rook && p.getColor() == this.getColor() && p.getMoveCount() == 0;
 	}
 
@@ -80,16 +80,16 @@ public class King extends ChessPiece {
 		if (getMoveCount() == 0 && !chessMatch.getCheck()) {
 			// #specialmove castling kingside rook
 			if (testRookCastling(new Position(position.getRow(), position.getColumn() + 3))) {
-				if (getBoard().piece(position.getRow(), position.getColumn() + 1) == null
-						&& getBoard().piece(position.getRow(), position.getColumn() + 2) == null) {
+				if (getBoard().getPiece(position.getRow(), position.getColumn() + 1) == null
+						&& getBoard().getPiece(position.getRow(), position.getColumn() + 2) == null) {
 					pm[position.getRow()][position.getColumn() + 2] = true;
 				}
 			}
 			// #specialmove castling queenside rook
 			if (testRookCastling(new Position(position.getRow(), position.getColumn() - 4))) {
-				if (getBoard().piece(position.getRow(), position.getColumn() - 1) == null
-						&& getBoard().piece(position.getRow(), position.getColumn() - 2) == null
-						&& getBoard().piece(position.getRow(), position.getColumn() - 3) == null) {
+				if (getBoard().getPiece(position.getRow(), position.getColumn() - 1) == null
+						&& getBoard().getPiece(position.getRow(), position.getColumn() - 2) == null
+						&& getBoard().getPiece(position.getRow(), position.getColumn() - 3) == null) {
 					pm[position.getRow()][position.getColumn() - 2] = true;
 				}
 			}

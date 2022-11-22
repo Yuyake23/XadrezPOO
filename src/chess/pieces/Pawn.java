@@ -53,13 +53,13 @@ public class Pawn extends ChessPiece {
 		// left
 		p.setColumn(this.position.getColumn() + wm);
 		if (getBoard().positionExists(p) && getBoard().thereIsAPiece(p)
-				&& ((ChessPiece) getBoard().piece(p)).getColor() != this.getColor()) {
+				&& ((ChessPiece) getBoard().getPiece(p)).getColor() != this.getColor()) {
 			pm[p.getRow()][p.getColumn()] = true;
 		}
 		// right
 		p.setColumn(this.position.getColumn() - wm);
 		if (getBoard().positionExists(p) && getBoard().thereIsAPiece(p)
-				&& ((ChessPiece) getBoard().piece(p)).getColor() != this.getColor()) {
+				&& ((ChessPiece) getBoard().getPiece(p)).getColor() != this.getColor()) {
 			pm[p.getRow()][p.getColumn()] = true;
 		}
 
@@ -69,12 +69,12 @@ public class Pawn extends ChessPiece {
 			if (position.getRow() == 3 || position.getRow() == 4) {
 				p.setValues(position.getRow(), position.getColumn() - 1); // left
 				if (getBoard().positionExists(p) && isThereOpponentPiece(p)
-						&& chessMatch.getEnPassantVulnerable() == getBoard().piece(p)) {
+						&& chessMatch.getEnPassantVulnerable() == getBoard().getPiece(p)) {
 					pm[p.getRow() + wm][p.getColumn()] = true;
 				}
 				p.setValues(position.getRow(), position.getColumn() + 1); // right
 				if (getBoard().positionExists(p) && isThereOpponentPiece(p)
-						&& chessMatch.getEnPassantVulnerable() == getBoard().piece(p)) {
+						&& chessMatch.getEnPassantVulnerable() == getBoard().getPiece(p)) {
 					pm[p.getRow() + wm][p.getColumn()] = true;
 				}
 			}

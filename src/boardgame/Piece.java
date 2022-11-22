@@ -10,13 +10,11 @@ public abstract class Piece implements Serializable{
 	private static final long serialVersionUID = -6453738799351240322L;
 	
 	protected Position position;
-	protected ChessMatch chessMatch;
 	private Board board;
 
-	public Piece(Board board, ChessMatch chessMatch) {
+	public Piece(Board board) {
 		this.board = board;
 		this.position = null;
-		this.chessMatch = chessMatch;
 	}
 
 	public Position getPosition() {
@@ -33,13 +31,8 @@ public abstract class Piece implements Serializable{
 
 	public abstract boolean[][] getAllPossibleMoves();
 	
-	// hook method
-	public boolean[][] getPossibleMoves(){
-		boolean[][] pm = getAllPossibleMoves();
-		chessMatch.validadePossibleMoves(pm, position);
-		return pm;
-	}
-
+	public abstract boolean[][] getPossibleMoves();
+	
 	// hook method
 	public boolean possibleMove(Position position) {
 		return getAllPossibleMoves()[position.getRow()][position.getColumn()];
