@@ -28,7 +28,9 @@ public class BashTerminal extends Terminal {
 			char column = s.charAt(0);
 			int row = Integer.parseInt(s.substring(1));
 			return new ChessPosition(column, row);
-		} catch (InputMismatchException | StringIndexOutOfBoundsException e) {
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			System.exit(0);
 			throw new InputMismatchException("Error reading ChessPosition. Valid values are from a1 to h8");
 		}
 	}

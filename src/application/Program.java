@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.Scanner;
 
 import chess.Color;
 import ui.Terminal;
@@ -15,7 +16,24 @@ import ui.network.NetworkTerminal;
 
 public class Program {
 	private static enum GameType {
-		local, client, host
+		LOCAL(1), HOST(2), CLIENT(3);
+
+		@SuppressWarnings("unused")
+		private final int VALUE;
+
+		GameType(int value) {
+			this.VALUE = value;
+		}
+
+		private static GameType typeByNumber(int value) {
+			return switch (value) {
+				case 1 -> LOCAL;
+				case 2 -> HOST;
+				case 3 -> CLIENT;
+				default -> throw new IllegalArgumentException("Unexpected value: " + value);
+			};
+		}
+
 	}
 
 	private static Terminal whitePlayer;
@@ -23,32 +41,105 @@ public class Program {
 
 	private static Game game;
 
+	@SuppressWarnings("resource")
 	public static void main(String[] args) {
-		GameType gameType = GameType.local;
+		Scanner sc = new Scanner(System.in);
+		GameType gameType = GameType.LOCAL;
 
 		/*
 		 * -nh : Host -nc : Client
 		 */
 
 		if (args.length == 0) {
-			System.err.println("Quais são os argumentos, querido?");
-			System.exit(1);
+			try {
+
+				System.out.print("""
+						===== ESCOLHA UMA OPÇÃO =====
+						1 - Jogo local
+						2 - Abrir partida LAN
+						3 - Entrar em partida LAN
+						  -> """);
+				gameType = GameType.typeByNumber(sc.nextInt());
+				sc.nextLine();
+
+				if (gameType == GameType.LOCAL) {
+					System.out.print("""
+							===== ESCOLHA UMA OPÇÃO =====
+							b - Jogar aqui
+							g - Jogar em interface gráfica
+							  -> """);
+					char ui = sc.nextLine().charAt(0);
+					if (ui != 'b' && ui != 'g')
+						throw new IllegalArgumentException("Unexpected value: " + ui);
+
+					System.out.print("Nome do primeiro jogador:\n  -> ");
+					String name1 = sc.nextLine();
+					System.out.print("Nome do segundo jogador:\n  -> ");
+					String name2 = sc.nextLine();
+
+					args = new String[] { "-p1", "-" + ui, name1, "-p2", "-" + ui, name2 };
+				} else if (gameType == GameType.HOST) {
+					System.out.print("""
+							===== ESCOLHA UMA OPÇÃO =====
+							b - Jogar aqui
+							g - Jogar em interface gráfica
+							  -> """);
+					char ui = sc.nextLine().charAt(0);
+					if (ui != 'b' && ui != 'g')
+						throw new IllegalArgumentException("Unexpected value: " + ui);
+
+					System.out.print("Qual o seu nome?\n  -> ");
+					String name1 = sc.nextLine();
+
+					args = new String[] { "-nh", "-p1", "-" + ui, name1 };
+				} else if (gameType == GameType.CLIENT) {
+					System.out.print("Digite o ip e a porta do host (xxx.xxx.xxx.xxx:porta):\n  -> ");
+					String socket = sc.nextLine();
+					if (!socket.matches("[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[:][0-9]{1,6}"))
+						throw new IllegalArgumentException("Unexpected value: " + socket);
+
+					System.out.print("""
+							===== ESCOLHA UMA OPÇÃO =====
+							b - Jogar aqui
+							g - Jogar em interface gráfica
+							  -> """);
+					char ui = sc.nextLine().charAt(0);
+					if (ui != 'b' && ui != 'g')
+						throw new IllegalArgumentException("Unexpected value: " + ui);
+
+					System.out.print("Qual o seu nome?\n  -> ");
+					String name2 = sc.nextLine();
+
+					args = new String[] { "-nc", socket, "-p2", "-" + ui, name2 };
+				} else {
+					sc.close();
+					System.err.println("Tipo de jogo inválido!");
+					System.exit(1);
+				}
+
+			} catch (Exception e) {
+				System.err.println("Inválido!");
+				System.exit(0);
+			}
 		} else if (args[0].contains("-n")) {
 			if (args[0].equalsIgnoreCase("-nh")) {
-				gameType = GameType.host;
+				gameType = GameType.HOST;
 			} else if (args[0].equals("-nc")) {
-				gameType = GameType.client;
+				gameType = GameType.CLIENT;
 			}
 		}
 
-		if (gameType == GameType.local) {
+		if (gameType == GameType.LOCAL) {
 			configureLocalGame(args);
-		} else if (gameType == GameType.host) {
+		} else if (gameType == GameType.HOST) {
 			configureNetworkGameAsHost(args);
-		} else if (gameType == GameType.client) {
+		} else if (gameType == GameType.CLIENT) {
 			configureNetworkGameAsClient(args);
 		}
-
+		try {
+			sc.close();
+		} catch (Exception e) {
+		}
 	}
 
 	private static void configureNetworkGameAsClient(String[] args) {
