@@ -8,7 +8,7 @@ import boardgame.Position;
 public class ChessPosition implements Serializable {
 	@Serial
 	private static final long serialVersionUID = -5903965210856179209L;
-	
+
 	private char column;
 	private int row;
 

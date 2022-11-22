@@ -11,7 +11,7 @@ import chess.Color;
 public class Pawn extends ChessPiece {
 	@Serial
 	private static final long serialVersionUID = -5449357388923766191L;
-	
+
 	public Pawn(Board board, ChessMatch chessMatch, Color color) {
 		super(board, chessMatch, color);
 	}

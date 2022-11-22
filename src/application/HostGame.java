@@ -13,22 +13,22 @@ import chess.Color;
 import ui.Terminal;
 
 public class HostGame implements Game{
-	
+
 	private ChessMatch chessMatch;
 	private List<ChessPiece> capturedPieces;
-	
+
 	private Terminal whiteTerminal;
 	private Terminal blackTerminal;
-	
+
 	public HostGame(Terminal whiteTerminal, Terminal blackTerminal) {
 		this.chessMatch = new ChessMatch();
 		this.capturedPieces = new ArrayList<>();
 		this.whiteTerminal = whiteTerminal;
 		this.blackTerminal = blackTerminal;
-		
+
 		game();
 	}
-	
+
 	private void game() {
 		Terminal currentPlayer = whiteTerminal;
 		try {
@@ -77,7 +77,7 @@ public class HostGame implements Game{
 			e.printStackTrace();
 		}
 	}
-	
+
 	private Terminal opponent(Terminal terminal) {
 		return terminal == blackTerminal ? whiteTerminal : blackTerminal;
 	}

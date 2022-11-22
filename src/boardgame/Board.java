@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class Board implements Serializable{
 	@Serial
 	private static final long serialVersionUID = -2745932311301004228L;
-	
+
 	private final int rows;
 	private final int columns;
 	private Piece[][] pieces;

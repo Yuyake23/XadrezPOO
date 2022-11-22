@@ -11,7 +11,7 @@ import chess.Color;
 public class Bishop extends ChessPiece {
 	@Serial
 	private static final long serialVersionUID = 6493847842904924709L;
-	
+
 	public Bishop(Board board, ChessMatch chessMatch, Color color) {
 		super(board, chessMatch, color);
 	}

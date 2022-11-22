@@ -101,7 +101,7 @@ public class UI {
 			throw new InputMismatchException("Error reading ChessPosition. Valid values are from a1 to h8");
 		}
 	}
-	
+
 	public static void printMatch(ChessMatch chessMatch, List<ChessPiece> capturedPieces, boolean[][] possibleMoves) {
 		printBoard(chessMatch, possibleMoves);
 		System.out.println();

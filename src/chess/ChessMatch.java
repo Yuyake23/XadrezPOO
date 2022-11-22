@@ -276,7 +276,7 @@ public class ChessMatch implements Serializable {
 		Piece capturedPiece = makeMove(source, target);
 		boolean check = testCheck(currentPlayer);
 		undoMove(source, target, capturedPiece);
-		
+
 		return check;
 	}
 
@@ -293,7 +293,7 @@ public class ChessMatch implements Serializable {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -318,7 +318,7 @@ public class ChessMatch implements Serializable {
 				}
 			}
 		}
-		
+
 		return true;
 	}
 

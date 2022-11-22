@@ -11,7 +11,7 @@ import chess.Color;
 public class Knight extends ChessPiece {
 	@Serial
 	private static final long serialVersionUID = -8424278947212534686L;
-	
+
 	public Knight(Board board, ChessMatch chessMatch, Color color) {
 		super(board, chessMatch, color);
 	}
@@ -38,11 +38,11 @@ public class Knight extends ChessPiece {
 				p.setValues(position.getRow() + i, position.getColumn() + j);
 				if (getBoard().positionExists(p) && canMove(p))
 					pm[p.getRow()][p.getColumn()] = true;
-				
+
 				p.setValues(position.getRow() + j, position.getColumn() + i);
 				if (getBoard().positionExists(p) && canMove(p))
 					pm[p.getRow()][p.getColumn()] = true;
-			}	
+			}
 		}
 
 		return pm;

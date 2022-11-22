@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class Position implements Serializable {
 	@Serial
 	private static final long serialVersionUID = -8204457428576883593L;
-	
+
 	private int row;
 	private int column;
 

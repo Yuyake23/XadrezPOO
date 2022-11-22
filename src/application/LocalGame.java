@@ -46,7 +46,7 @@ public class LocalGame implements Game{
 			}
 		}
 	}
-	
+
 	@Override
 	public String chosePieceTypeToPromotion() {
 		while (true) {

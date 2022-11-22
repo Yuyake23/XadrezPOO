@@ -11,7 +11,7 @@ import chess.Color;
 public class Rook extends ChessPiece {
 	@Serial
 	private static final long serialVersionUID = 2737208292316407438L;
-	
+
 	public Rook(Board board, ChessMatch chessMatch, Color color) {
 		super(board, chessMatch, color);
 	}

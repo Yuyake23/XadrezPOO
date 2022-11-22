@@ -38,6 +38,7 @@ public abstract class ChessPiece extends Piece implements Serializable {
 	}
 
 	// hook method
+	@Override
 	public boolean[][] getPossibleMoves() {
 		boolean[][] pm = getAllPossibleMoves();
 		chessMatch.validadePossibleMoves(pm, position);
@@ -53,6 +54,7 @@ public abstract class ChessPiece extends Piece implements Serializable {
 		return p != null && !p.getColor().equals(color);
 	}
 
+	@Override
 	public abstract boolean[][] getAllPossibleMoves();
 
 }

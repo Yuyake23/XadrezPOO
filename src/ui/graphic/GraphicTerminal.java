@@ -37,25 +37,25 @@ public class GraphicTerminal extends Terminal {
 	@Override
 	public void message(String s) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void finish(ChessMatch chessMatch, List<ChessPiece> capturedPieces, Color winner) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void exceptionMessage(Exception e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void update(ChessMatch chessMatch, List<ChessPiece> capturedPieces, boolean[][] possibleMoves) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
