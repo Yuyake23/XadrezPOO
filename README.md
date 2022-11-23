@@ -14,4 +14,4 @@
   - Grupos de três + tema;
 - Grupos (2 de quatro, um de cinco):
   1. ???
-  2. Natanael, Bruno, Higor, Fernando
+  2. Natanael, Bruno, Igor, Fernando
