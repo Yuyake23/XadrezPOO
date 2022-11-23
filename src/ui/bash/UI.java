@@ -132,7 +132,7 @@ public class UI {
 				System.out.println(RED + "CHECK!" + RESET);
 			}
 		} else {
-			System.out.println("CHECKMATE!");
+			System.out.println(RED + "CHECKMATE!" + RESET);
 			System.out.println("Winner: " + getUIColor(chessMatch.getCurrentPlayer(), FontType.PLAIN)
 					+ chessMatch.getCurrentPlayer() + RESET);
 		}
@@ -170,11 +170,11 @@ public class UI {
 		if (piece == null) {
 			System.out.print("-");
 		} else {
-			if (chessMatch.testCheck(piece.getColor()) && piece.isThereAnyPossibleMove()) {
+			if (chessMatch.testCheck(piece.getColor()) && !chessMatch.getCheckMate()
+					&& piece.isThereAnyPossibleMove()) {
 				System.out.print(
 						piece instanceof King ? RED_UNDERLINED : getUIColor(piece.getColor(), FontType.UNDERLINED));
-			}
-			if (piece instanceof King k && chessMatch.testCheck(k)) {
+			} else if (piece instanceof King k && chessMatch.testCheck(k)) {
 				// if it's in check
 				System.out.print(RED);
 			} else {

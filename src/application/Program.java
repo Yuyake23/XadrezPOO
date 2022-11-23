@@ -128,7 +128,6 @@ public class Program {
 				gameType = GameType.CLIENT;
 			}
 		}
-
 		if (gameType == GameType.LOCAL) {
 			configureLocalGame(args);
 		} else if (gameType == GameType.HOST) {
@@ -136,6 +135,10 @@ public class Program {
 		} else if (gameType == GameType.CLIENT) {
 			configureNetworkGameAsClient(args);
 		}
+		
+		// Inicia o jogo
+		game.start();
+		
 		try {
 			sc.close();
 		} catch (Exception e) {
@@ -199,13 +202,11 @@ public class Program {
 			whitePlayer.message("Nome do cliente: " + clientName);
 			Program.blackPlayer = new NetworkTerminal(Color.BLACK, clientName, host, client);
 
+			Program.game = new HostGame(whitePlayer, blackPlayer);
 		} catch (IOException e) {
 			whitePlayer.message("Deu problema com a conexão com o cliente");
-			e.printStackTrace();
-			System.exit(2);
 		}
 
-		Program.game = new HostGame(whitePlayer, blackPlayer);
 	}
 
 	private static void configureLocalGame(String[] args) {
@@ -246,6 +247,7 @@ public class Program {
 			System.exit(1);
 		}
 
+		whitePlayer.setPlayerColor(null);
 		Program.game = new LocalGame(whitePlayer, whitePlayer.getName(), blackPlayer.getName());
 	}
 

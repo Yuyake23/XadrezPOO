@@ -23,12 +23,11 @@ public class ClientGame implements Game {
 	public ClientGame(Terminal localTerminal, Socket client) {
 		this.localTerminal = localTerminal;
 		this.client = client;
-
-		game();
 	}
 
 	@SuppressWarnings("unchecked")
-	private void game() {
+	@Override
+	public void start() {
 		try (ObjectInputStream entrada = new ObjectInputStream(this.client.getInputStream());
 				ObjectOutputStream saida = new ObjectOutputStream(this.client.getOutputStream())) {
 			while (true) {

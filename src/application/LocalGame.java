@@ -21,11 +21,10 @@ public class LocalGame implements Game{
 		this.chessMatch = new ChessMatch();
 		this.capturedPieces = new ArrayList<>();
 		this.terminal = terminal;
-
-		game();
 	}
 
-	private void game() {
+	@Override
+	public void start() {
 		ChessPosition source, target;
 		ChessPiece capturedPiece;
 		boolean possibleMovies[][];
@@ -34,23 +33,21 @@ public class LocalGame implements Game{
 			try {
 				source = this.terminal.readSourcePosition(chessMatch, capturedPieces);
 				possibleMovies = chessMatch.possibleMovies(source);
-
 				target = this.terminal.readTargetPosition(chessMatch, capturedPieces, possibleMovies);
-
 				capturedPiece = chessMatch.performChessMove(source, target);
-
 				if (capturedPiece != null)
 					capturedPieces.add(capturedPiece);
 			} catch (InputMismatchException | NumberFormatException | ChessException e) {
 				terminal.exceptionMessage(e);
 			}
 		}
+		terminal.finish(chessMatch, capturedPieces, chessMatch.getCurrentPlayer());
 	}
 
 	@Override
 	public String chosePieceTypeToPromotion() {
 		while (true) {
-			String type = null;
+			String type;
 			try {
 				type = terminal.chosePieceTypeToPromotion();
 				if (type.length() == 1 && "BNQR".contains(type)) {

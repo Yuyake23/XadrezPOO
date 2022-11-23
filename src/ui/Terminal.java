@@ -31,12 +31,19 @@ public abstract class Terminal {
 
 	public abstract void exceptionMessage(Exception e);
 
-	public abstract void finish(ChessMatch chessMatch, List<ChessPiece> capturedPieces, Color winner)
-			throws SocketException;
+	public abstract void finish(ChessMatch chessMatch, List<ChessPiece> capturedPieces, Color winner);
 
 	public abstract void update(ChessMatch chessMatch, List<ChessPiece> capturedPieces, boolean[][] possibleMoves);
 
 	public String getName() {
 		return name;
+	}
+
+	public Color getPlayerColor() {
+		return playerColor;
+	}
+
+	public void setPlayerColor(Color playerColor) {
+		this.playerColor = playerColor;
 	}
 }

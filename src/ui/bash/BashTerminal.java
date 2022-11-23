@@ -29,8 +29,6 @@ public class BashTerminal extends Terminal {
 			int row = Integer.parseInt(s.substring(1));
 			return new ChessPosition(column, row);
 		} catch (RuntimeException e) {
-			e.printStackTrace();
-			System.exit(0);
 			throw new InputMismatchException("Error reading ChessPosition. Valid values are from a1 to h8");
 		}
 	}
@@ -66,14 +64,6 @@ public class BashTerminal extends Terminal {
 	public void finish(ChessMatch chessMatch, List<ChessPiece> capturedPieces, Color winner) {
 		UI.clearScreen();
 		UI.printMatch(chessMatch, capturedPieces);
-
-		if (winner == null) {
-			System.out.println("\nEmpate!");
-		} else if (winner == super.playerColor) {
-			System.out.println("\nVocê venceu!");
-		} else {
-			System.out.println("\nVocê perdeu!");
-		}
 	}
 
 	@Override

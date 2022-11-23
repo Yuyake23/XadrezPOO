@@ -22,9 +22,8 @@ public class ChessMatch implements Serializable {
 	private static final long serialVersionUID = 2272696391384483565L;
 
 	private Board board;
-	private Color winner;
 	private int turn;
-	private Color currentPlayer;
+	private Color currentPlayerColor;
 	private boolean check; // is false by default
 	private boolean checkMate;
 	private Pawn enPassantVulnerable;
@@ -35,7 +34,7 @@ public class ChessMatch implements Serializable {
 	public ChessMatch() {
 		this.board = new Board(8, 8);
 		this.turn = 1;
-		this.currentPlayer = Color.WHITE;
+		this.currentPlayerColor = Color.WHITE;
 		initialSetup();
 	}
 
@@ -52,7 +51,7 @@ public class ChessMatch implements Serializable {
 	}
 
 	public Color getCurrentPlayer() {
-		return currentPlayer;
+		return currentPlayerColor;
 	}
 
 	public boolean getCheck() {
@@ -98,7 +97,7 @@ public class ChessMatch implements Serializable {
 				ChessPiece pawnBackup = pawn.clone();
 				String type = Program.chosePieceTypeToPromotion(); // I don´t like it
 				movedPiece = replacePromotedPiece(movedPiece, type);
-				if (testCheck(currentPlayer)) {
+				if (testCheck(currentPlayerColor)) {
 					undoMove(source, target, capturedPiece);
 					movedPiece = pawnBackup;
 					throw new ChessException("You can't put yourself in check");
@@ -106,28 +105,26 @@ public class ChessMatch implements Serializable {
 			}
 		}
 
-		if (testCheck(currentPlayer)) {
+		if (testCheck(currentPlayerColor)) {
 			undoMove(source, target, capturedPiece);
 			throw new ChessException(check ? "You must defend your king" : "You can't put yourself in check");
 		}
 
 		// #specialmove en passant
-		if (movedPiece instanceof Pawn pawn && (source.getRow() - 2 == target.getRow()
-				|| source.getRow() + 2 == target.getRow())) {
+		if (movedPiece instanceof Pawn pawn
+				&& (source.getRow() - 2 == target.getRow() || source.getRow() + 2 == target.getRow())) {
 			this.enPassantVulnerable = pawn;
 		} else {
 			this.enPassantVulnerable = null;
 		}
 
-		this.check = testCheck(opponent(currentPlayer));
+		this.check = testCheck(opponent(currentPlayerColor));
 
 		if (this.check) {
-			this.checkMate = testCheckMate(opponent(currentPlayer));
+			this.checkMate = testCheckMate(opponent(currentPlayerColor));
 		}
 
-		if (this.checkMate) {
-			winner = currentPlayer;
-		} else {
+		if (!this.checkMate) {
 			nextTurn();
 		}
 
@@ -232,7 +229,7 @@ public class ChessMatch implements Serializable {
 	private void validateSourcePosition(Position source) {
 		if (!board.thereIsAPiece(source))
 			throw new ChessException("There is no piece on source position");
-		if (currentPlayer != ((ChessPiece) board.getPiece(source)).getColor())
+		if (currentPlayerColor != ((ChessPiece) board.getPiece(source)).getColor())
 			throw new ChessException("The chose piece is not yours");
 		if (!board.getPiece(source).isThereAnyPossibleMove())
 			throw new ChessException("There is no possible moves for the chosen piece");
@@ -245,7 +242,7 @@ public class ChessMatch implements Serializable {
 
 	private void nextTurn() {
 		this.turn++;
-		this.currentPlayer = this.currentPlayer == Color.WHITE ? Color.BLACK : Color.WHITE;
+		this.currentPlayerColor = this.currentPlayerColor == Color.WHITE ? Color.BLACK : Color.WHITE;
 	}
 
 	public Color opponent(Color color) {
@@ -274,7 +271,7 @@ public class ChessMatch implements Serializable {
 
 	private boolean putCurrentPlayerInCheck(Position source, Position target) {
 		Piece capturedPiece = makeMove(source, target);
-		boolean check = testCheck(currentPlayer);
+		boolean check = testCheck(currentPlayerColor);
 		undoMove(source, target, capturedPiece);
 
 		return check;
@@ -322,9 +319,13 @@ public class ChessMatch implements Serializable {
 		return true;
 	}
 
-	private void placeNewPiece(char column, int row, ChessPiece piece) {
-		board.placePiece(piece, new ChessPosition(column, row).toPosition());
-		piecesOnTheBoard.add(piece);
+	private void placeNewPiece(char column, int row, ChessPiece chessPiece) {
+		board.placePiece(chessPiece, new ChessPosition(column, row).toPosition());
+		piecesOnTheBoard.add(chessPiece);
+	}
+
+	public Color getWinner() {
+		return currentPlayerColor;
 	}
 
 	private void initialSetup() {
@@ -361,9 +362,5 @@ public class ChessMatch implements Serializable {
 		placeNewPiece('f', 7, new Pawn(board, this, Color.BLACK));
 		placeNewPiece('g', 7, new Pawn(board, this, Color.BLACK));
 		placeNewPiece('h', 7, new Pawn(board, this, Color.BLACK));
-	}
-
-	public Color getWinner() {
-		return winner;
 	}
 }
