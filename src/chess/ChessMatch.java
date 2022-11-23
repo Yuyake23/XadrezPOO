@@ -27,7 +27,7 @@ public class ChessMatch implements Serializable {
 	private Color currentPlayer;
 	private boolean check; // is false by default
 	private boolean checkMate;
-	private ChessPiece enPassantVulnerable;
+	private Pawn enPassantVulnerable;
 
 	private List<Piece> piecesOnTheBoard = new ArrayList<>();
 	private List<Piece> capturedPieces = new ArrayList<>();
@@ -112,9 +112,9 @@ public class ChessMatch implements Serializable {
 		}
 
 		// #specialmove en passant
-		if (movedPiece instanceof Pawn && source.getRow() - 2 == target.getRow()
-				|| source.getRow() + 2 == target.getRow()) {
-			this.enPassantVulnerable = movedPiece;
+		if (movedPiece instanceof Pawn pawn && (source.getRow() - 2 == target.getRow()
+				|| source.getRow() + 2 == target.getRow())) {
+			this.enPassantVulnerable = pawn;
 		} else {
 			this.enPassantVulnerable = null;
 		}
