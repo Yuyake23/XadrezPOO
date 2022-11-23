@@ -12,6 +12,5 @@
   - *Entregar até última semana de novembro*;
   - Se não completar, entrega versão /beta/ e apresenta 1.0/2.0;
   - Grupos de três + tema;
-- Grupos (2 de quatro, um de cinco):
-  1. ???
-  2. Natanael, Bruno, Higor, Fernando
+- Grupos 
+  1. Natanael, Bruno, Igor, Fernando
