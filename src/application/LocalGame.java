@@ -1,6 +1,5 @@
 package application;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -11,7 +10,7 @@ import chess.ChessPiece;
 import chess.ChessPosition;
 import ui.Terminal;
 
-public class LocalGame implements Game{
+public class LocalGame implements Game {
 
 	private ChessMatch chessMatch;
 	private List<ChessPiece> capturedPieces;
@@ -29,7 +28,7 @@ public class LocalGame implements Game{
 		ChessPiece capturedPiece;
 		boolean possibleMovies[][];
 
-		while (!chessMatch.getCheckMate()) {
+		while (!chessMatch.matchIsOver()) {
 			try {
 				source = this.terminal.readSourcePosition(chessMatch, capturedPieces);
 				possibleMovies = chessMatch.possibleMovies(source);
@@ -46,18 +45,11 @@ public class LocalGame implements Game{
 
 	@Override
 	public String chosePieceTypeToPromotion() {
-		while (true) {
-			String type;
-			try {
-				type = terminal.chosePieceTypeToPromotion();
-				if (type.length() == 1 && "BNQR".contains(type)) {
-					return type;
-				} else {
-					terminal.message("Invalid Type! ");
-				}
-			} catch (ClassNotFoundException | NullPointerException | IOException e) {
-				terminal.exceptionMessage(e);
-			}
-		}
+		return terminal.chosePieceTypeToPromotion();
 	}
+
+//	@Override
+//	public void message(String s) {
+//		terminal.message(s);
+//	}
 }

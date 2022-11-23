@@ -1,6 +1,5 @@
 package application;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -19,6 +18,7 @@ public class HostGame implements Game {
 
 	private Terminal whiteTerminal;
 	private Terminal blackTerminal;
+	private Terminal currentPlayer;
 
 	public HostGame(Terminal whiteTerminal, Terminal blackTerminal) {
 		this.chessMatch = new ChessMatch();
@@ -29,12 +29,12 @@ public class HostGame implements Game {
 
 	@Override
 	public void start() {
-		Terminal currentPlayer = whiteTerminal;
+		currentPlayer = whiteTerminal;
 
 		currentPlayer.update(chessMatch, capturedPieces, null);
 		opponent(currentPlayer).update(chessMatch, capturedPieces, null);
 
-		while (!chessMatch.getCheckMate()) {
+		while (!chessMatch.matchIsOver()) {
 			try {
 
 				if (chessMatch.getCurrentPlayer() == Color.WHITE) {
@@ -77,12 +77,12 @@ public class HostGame implements Game {
 
 	@Override
 	public String chosePieceTypeToPromotion() {
-		try {
-			return whiteTerminal.chosePieceTypeToPromotion();
-		} catch (ClassNotFoundException | NullPointerException | IOException e) {
-			whiteTerminal.exceptionMessage(e);
-		}
-		return null;
+		return whiteTerminal.chosePieceTypeToPromotion();
 	}
+
+//	@Override
+//	public void message(String s) {
+//		currentPlayer.message(s);
+//	}
 
 }

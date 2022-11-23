@@ -58,6 +58,11 @@ public class BashTerminal extends Terminal {
 	@Override
 	public void message(String s) {
 		System.out.println(s);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -69,6 +74,11 @@ public class BashTerminal extends Terminal {
 	@Override
 	public void exceptionMessage(Exception e) {
 		System.err.println(UI.RED + e.getMessage() + UI.RESET);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e2) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

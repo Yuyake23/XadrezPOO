@@ -1,7 +1,5 @@
 package ui;
 
-import java.io.IOException;
-import java.net.SocketException;
 import java.util.List;
 
 import chess.ChessMatch;
@@ -24,8 +22,7 @@ public abstract class Terminal {
 	public abstract ChessPosition readTargetPosition(ChessMatch chessMatch, List<ChessPiece> capturedPieces,
 			boolean[][] possibleMoves);
 
-	public abstract String chosePieceTypeToPromotion()
-			throws IOException, ClassNotFoundException, NullPointerException, SocketException;
+	public abstract String chosePieceTypeToPromotion();
 
 	public abstract void message(String s);
 

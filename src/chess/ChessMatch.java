@@ -28,6 +28,8 @@ public class ChessMatch implements Serializable {
 	private boolean checkMate;
 	private Pawn enPassantVulnerable;
 
+	private int movesWithOutCaptureAndPawnMove;
+
 	private List<Piece> piecesOnTheBoard = new ArrayList<>();
 	private List<Piece> capturedPieces = new ArrayList<>();
 
@@ -66,6 +68,34 @@ public class ChessMatch implements Serializable {
 		return enPassantVulnerable;
 	}
 
+	public boolean matchIsOver() {
+		if (checkMate)
+			return true;
+		if (drawn())
+			return true;
+		return false;
+	}
+
+	public boolean drawn() {
+		// TODO: condições de empate e finalizações de jogo incomuns
+		if (stalemale() || fiftyMoveRule())
+			return true;
+		return false;
+	}
+
+	public boolean stalemale() {
+		if (check)
+			return false;
+		for (Piece piece : piecesOnTheBoard)
+			if (piece.isThereAnyPossibleMove())
+				return false;
+		return true;
+	}
+
+	public boolean fiftyMoveRule() {
+		return this.movesWithOutCaptureAndPawnMove >= 10;
+	}
+
 	public ChessPiece[][] getPieces() {
 		ChessPiece[][] chessPieces = new ChessPiece[board.getRows()][board.getColumns()];
 		for (int i = 0; i < board.getRows(); i++) {
@@ -96,7 +126,12 @@ public class ChessMatch implements Serializable {
 			if (target.getRow() == 0 || target.getRow() == 7) {
 				ChessPiece pawnBackup = pawn.clone();
 				String type = Program.chosePieceTypeToPromotion(); // I don´t like it
-				movedPiece = replacePromotedPiece(movedPiece, type);
+				try {
+					movedPiece = replacePromotedPiece(movedPiece, type);
+				} catch (ChessException e) {
+					undoMove(source, target, capturedPiece);
+					throw e;
+				}
 				if (testCheck(currentPlayerColor)) {
 					undoMove(source, target, capturedPiece);
 					movedPiece = pawnBackup;
@@ -128,6 +163,13 @@ public class ChessMatch implements Serializable {
 			nextTurn();
 		}
 
+		// a tie logic
+		if (capturedPiece == null && !(movedPiece instanceof Pawn)) {
+			this.movesWithOutCaptureAndPawnMove++;
+		} else {
+			this.movesWithOutCaptureAndPawnMove = 0;
+		}
+
 		return (ChessPiece) capturedPiece;
 	}
 
@@ -138,7 +180,7 @@ public class ChessMatch implements Serializable {
 			case "N" -> new Knight(board, this, piece.getColor());
 			case "Q" -> new Queen(board, this, piece.getColor());
 			case "R" -> new Rook(board, this, piece.getColor());
-			default -> throw new IllegalArgumentException("Invalid type for promotion");
+			default -> throw new ChessException("Invalid type for promotion");
 		};
 		Position pos = (Position) piece.getPosition().clone();
 		Piece p = board.removePiece(pos);
@@ -329,38 +371,42 @@ public class ChessMatch implements Serializable {
 	}
 
 	private void initialSetup() {
-		placeNewPiece('a', 1, new Rook(board, this, Color.WHITE));
-		placeNewPiece('b', 1, new Knight(board, this, Color.WHITE));
-		placeNewPiece('c', 1, new Bishop(board, this, Color.WHITE));
-		placeNewPiece('d', 1, new Queen(board, this, Color.WHITE));
 		placeNewPiece('e', 1, new King(board, this, Color.WHITE));
-		placeNewPiece('f', 1, new Bishop(board, this, Color.WHITE));
-		placeNewPiece('g', 1, new Knight(board, this, Color.WHITE));
-		placeNewPiece('h', 1, new Rook(board, this, Color.WHITE));
-		placeNewPiece('a', 2, new Pawn(board, this, Color.WHITE));
-		placeNewPiece('b', 2, new Pawn(board, this, Color.WHITE));
-		placeNewPiece('c', 2, new Pawn(board, this, Color.WHITE));
-		placeNewPiece('d', 2, new Pawn(board, this, Color.WHITE));
-		placeNewPiece('e', 2, new Pawn(board, this, Color.WHITE));
-		placeNewPiece('f', 2, new Pawn(board, this, Color.WHITE));
-		placeNewPiece('g', 2, new Pawn(board, this, Color.WHITE));
-		placeNewPiece('h', 2, new Pawn(board, this, Color.WHITE));
+		placeNewPiece('e', 5, new King(board, this, Color.BLACK));
+		placeNewPiece('a', 2, new Pawn(board, this, Color.BLACK));
 
-		placeNewPiece('a', 8, new Rook(board, this, Color.BLACK));
-		placeNewPiece('b', 8, new Knight(board, this, Color.BLACK));
-		placeNewPiece('c', 8, new Bishop(board, this, Color.BLACK));
-		placeNewPiece('d', 8, new Queen(board, this, Color.BLACK));
-		placeNewPiece('e', 8, new King(board, this, Color.BLACK));
-		placeNewPiece('f', 8, new Bishop(board, this, Color.BLACK));
-		placeNewPiece('g', 8, new Knight(board, this, Color.BLACK));
-		placeNewPiece('h', 8, new Rook(board, this, Color.BLACK));
-		placeNewPiece('a', 7, new Pawn(board, this, Color.BLACK));
-		placeNewPiece('b', 7, new Pawn(board, this, Color.BLACK));
-		placeNewPiece('c', 7, new Pawn(board, this, Color.BLACK));
-		placeNewPiece('d', 7, new Pawn(board, this, Color.BLACK));
-		placeNewPiece('e', 7, new Pawn(board, this, Color.BLACK));
-		placeNewPiece('f', 7, new Pawn(board, this, Color.BLACK));
-		placeNewPiece('g', 7, new Pawn(board, this, Color.BLACK));
-		placeNewPiece('h', 7, new Pawn(board, this, Color.BLACK));
+//		placeNewPiece('a', 1, new Rook(board, this, Color.WHITE));
+//		placeNewPiece('b', 1, new Knight(board, this, Color.WHITE));
+//		placeNewPiece('c', 1, new Bishop(board, this, Color.WHITE));
+//		placeNewPiece('d', 1, new Queen(board, this, Color.WHITE));
+//		placeNewPiece('e', 1, new King(board, this, Color.WHITE));
+//		placeNewPiece('f', 1, new Bishop(board, this, Color.WHITE));
+//		placeNewPiece('g', 1, new Knight(board, this, Color.WHITE));
+//		placeNewPiece('h', 1, new Rook(board, this, Color.WHITE));
+//		placeNewPiece('a', 2, new Pawn(board, this, Color.WHITE));
+//		placeNewPiece('b', 2, new Pawn(board, this, Color.WHITE));
+//		placeNewPiece('c', 2, new Pawn(board, this, Color.WHITE));
+//		placeNewPiece('d', 2, new Pawn(board, this, Color.WHITE));
+//		placeNewPiece('e', 2, new Pawn(board, this, Color.WHITE));
+//		placeNewPiece('f', 2, new Pawn(board, this, Color.WHITE));
+//		placeNewPiece('g', 2, new Pawn(board, this, Color.WHITE));
+//		placeNewPiece('h', 2, new Pawn(board, this, Color.WHITE));
+//
+//		placeNewPiece('a', 8, new Rook(board, this, Color.BLACK));
+//		placeNewPiece('b', 8, new Knight(board, this, Color.BLACK));
+//		placeNewPiece('c', 8, new Bishop(board, this, Color.BLACK));
+//		placeNewPiece('d', 8, new Queen(board, this, Color.BLACK));
+//		placeNewPiece('e', 8, new King(board, this, Color.BLACK));
+//		placeNewPiece('f', 8, new Bishop(board, this, Color.BLACK));
+//		placeNewPiece('g', 8, new Knight(board, this, Color.BLACK));
+//		placeNewPiece('h', 8, new Rook(board, this, Color.BLACK));
+//		placeNewPiece('a', 7, new Pawn(board, this, Color.BLACK));
+//		placeNewPiece('b', 7, new Pawn(board, this, Color.BLACK));
+//		placeNewPiece('c', 7, new Pawn(board, this, Color.BLACK));
+//		placeNewPiece('d', 7, new Pawn(board, this, Color.BLACK));
+//		placeNewPiece('e', 7, new Pawn(board, this, Color.BLACK));
+//		placeNewPiece('f', 7, new Pawn(board, this, Color.BLACK));
+//		placeNewPiece('g', 7, new Pawn(board, this, Color.BLACK));
+//		placeNewPiece('h', 7, new Pawn(board, this, Color.BLACK));
 	}
 }

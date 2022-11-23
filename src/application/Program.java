@@ -135,10 +135,10 @@ public class Program {
 		} else if (gameType == GameType.CLIENT) {
 			configureNetworkGameAsClient(args);
 		}
-		
+
 		// Inicia o jogo
 		game.start();
-		
+
 		try {
 			sc.close();
 		} catch (Exception e) {
@@ -252,7 +252,13 @@ public class Program {
 	}
 
 	public static String chosePieceTypeToPromotion() {
-		return game.chosePieceTypeToPromotion();
+		while (true) {
+//			try {
+				return game.chosePieceTypeToPromotion();
+//			} catch (RuntimeException e) {
+//				game.message("Invalid type");
+//			}
+		}
 	}
 
 }

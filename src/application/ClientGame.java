@@ -45,7 +45,7 @@ public class ClientGame implements Game {
 							saida.writeObject(new Object[] { Description.TARGET_POSITION, targetPosition });
 						}
 						case PIECE_TYPE_TO_PROMOTION -> {
-							String pieceType = chosePieceTypeToPromotion();
+							String pieceType = this.chosePieceTypeToPromotion();
 							saida.writeObject(new Object[] { Description.PIECE_TYPE_TO_PROMOTION, pieceType });
 						}
 						case UPDATE -> {
@@ -84,8 +84,12 @@ public class ClientGame implements Game {
 
 	@Override
 	public String chosePieceTypeToPromotion() {
-		// TODO Auto-generated method stub
-		return null;
+		return localTerminal.chosePieceTypeToPromotion();
 	}
+
+//	@Override
+//	public void message(String s) {
+//		localTerminal.message(s);
+//	}
 
 }
