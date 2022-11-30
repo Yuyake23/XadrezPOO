@@ -1,8 +1,6 @@
 package com.ifgrupo.chess;
 
-import java.io.Serializable;
-
-public enum Color implements Serializable{
+public enum Color{
 	BLACK,
 	WHITE;
 }
