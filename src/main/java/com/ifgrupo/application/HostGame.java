@@ -46,22 +46,19 @@ public class HostGame implements Game {
 				ChessPosition source, target;
 				ChessPiece capturedPiece;
 				boolean possibleMovies[][];
-				try {
-					source = currentPlayer.readSourcePosition(chessMatch, capturedPieces);
-					possibleMovies = chessMatch.possibleMovies(source);
-					opponent(currentPlayer).update(chessMatch, capturedPieces, possibleMovies);
+				source = currentPlayer.readSourcePosition(chessMatch, capturedPieces);
+				possibleMovies = chessMatch.possibleMovies(source);
+				opponent(currentPlayer).update(chessMatch, capturedPieces, possibleMovies);
 
-					target = currentPlayer.readTargetPosition(chessMatch, capturedPieces, possibleMovies);
+				target = currentPlayer.readTargetPosition(chessMatch, capturedPieces, possibleMovies);
 
-					capturedPiece = chessMatch.performChessMove(source, target);
+				capturedPiece = chessMatch.performChessMove(source, target);
 
-					if (capturedPiece != null)
-						capturedPieces.add(capturedPiece);
-				} catch (NullPointerException e) {
-					throw new InputMismatchException("Error reading ChessPosition. Valid values are from a1 to h8");
-				}
-			} catch (InputMismatchException | NumberFormatException | ChessException | ClassCastException e) {
-				currentPlayer.exceptionMessage(e);
+				if (capturedPiece != null)
+					capturedPieces.add(capturedPiece);
+			} catch (NullPointerException | InputMismatchException | NumberFormatException | ChessException
+					| ClassCastException e) {
+				e.printStackTrace();
 			}
 			currentPlayer.update(chessMatch, capturedPieces, null);
 			opponent(currentPlayer).update(chessMatch, capturedPieces, null);

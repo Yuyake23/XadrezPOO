@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 import com.ifgrupo.chess.Color;
 import com.ifgrupo.ui.Terminal;
+import com.ifgrupo.ui.ai.AITerminal;
 import com.ifgrupo.ui.bash.BashTerminal;
 import com.ifgrupo.ui.graphic.GraphicTerminal;
 import com.ifgrupo.ui.network.NetworkTerminal;
@@ -102,9 +103,10 @@ public class Program {
 							===== ESCOLHA UMA OPÇÃO =====
 							b - Jogar aqui
 							g - Jogar em interface gráfica
+							a - Inteligencia Artificial
 							  -> """);
 					char ui = sc.nextLine().charAt(0);
-					if (ui != 'b' && ui != 'g')
+					if (ui != 'b' && ui != 'g' && ui != 'a')
 						throw new IllegalArgumentException("Unexpected value: " + ui);
 
 					System.out.print("Qual o seu nome?\n  -> ");
@@ -159,6 +161,8 @@ public class Program {
 					localTerminal = new BashTerminal(Color.BLACK, name);
 				} else if (args[3].equalsIgnoreCase("-g")) {
 					localTerminal = new GraphicTerminal(Color.BLACK, name);
+				} else if (args[3].equalsIgnoreCase("-a")) {
+					localTerminal = new AITerminal(Color.BLACK, name);
 				} else {
 					System.out.println("-nc ip:porta -p2 (-b or -g) name");
 					System.exit(1);

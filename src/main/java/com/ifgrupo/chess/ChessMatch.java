@@ -107,6 +107,10 @@ public class ChessMatch implements Serializable {
 		return chessPieces;
 	}
 
+	public List<Piece> getPiecesOnTheBoard() {
+		return piecesOnTheBoard;
+	}
+
 	public boolean[][] possibleMovies(ChessPosition sourcePosition) {
 		Position position = sourcePosition.toPosition();
 		validateSourcePosition(position);
