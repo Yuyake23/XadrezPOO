@@ -19,11 +19,7 @@ public class Program {
 	private static enum GameType {
 		LOCAL(1), HOST(2), CLIENT(3);
 
-		@SuppressWarnings("unused")
-		private final int VALUE;
-
 		GameType(int value) {
-			this.VALUE = value;
 		}
 
 		private static GameType typeByNumber(int value) {
@@ -257,11 +253,7 @@ public class Program {
 
 	public static String chosePieceTypeToPromotion() {
 		while (true) {
-//			try {
-				return game.chosePieceTypeToPromotion();
-//			} catch (RuntimeException e) {
-//				game.message("Invalid type");
-//			}
+			return game.chosePieceTypeToPromotion();
 		}
 	}
 
