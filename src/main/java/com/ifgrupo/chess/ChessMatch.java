@@ -2,7 +2,9 @@ package com.ifgrupo.chess;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,7 @@ public class ChessMatch implements Serializable {
 
 	private List<Piece> piecesOnTheBoard = new ArrayList<>();
 	private List<Piece> capturedPieces = new ArrayList<>();
+	private Deque<Move> moveDeque = new ArrayDeque<>();
 
 	public ChessMatch() {
 		this.board = new Board(8, 8);
@@ -66,6 +69,10 @@ public class ChessMatch implements Serializable {
 
 	public ChessPiece getEnPassantVulnerable() {
 		return enPassantVulnerable;
+	}
+
+	public Deque<Move> getMoveDeque() {
+		return this.moveDeque;
 	}
 
 	public boolean matchIsOver() {
@@ -122,10 +129,11 @@ public class ChessMatch implements Serializable {
 		ChessPiece movedPiece = (ChessPiece) board.getPiece(target);
 
 		// #specialmove promotion
+		String type = null;
 		if (movedPiece instanceof Pawn pawn) {
 			if (target.getRow() == 0 || target.getRow() == 7) {
 				ChessPiece pawnBackup = pawn.clone();
-				String type = Program.chosePieceTypeToPromotion(); // I don´t like it
+				type = Program.chosePieceTypeToPromotion(); // I don´t like it
 				try {
 					movedPiece = replacePromotedPiece(movedPiece, type);
 				} catch (ChessException e) {
@@ -162,6 +170,9 @@ public class ChessMatch implements Serializable {
 		if (!this.checkMate) {
 			nextTurn();
 		}
+
+		// movement logging
+		this.moveDeque.add(new Move(sourcePosition, targetPosition, capturedPiece.getClass().getName(), type));
 
 		// a tie logic
 		if (capturedPiece == null && !(movedPiece instanceof Pawn)) {
@@ -234,7 +245,7 @@ public class ChessMatch implements Serializable {
 		board.placePiece(piece, source);
 
 		if (capturedPiece != null) {
-			board.placePiece(capturedPiece, target);
+			board.placePiece(capturedPiece, capturedPiece.getPosition());
 			this.capturedPieces.remove(capturedPiece);
 			this.piecesOnTheBoard.add(capturedPiece);
 		}
@@ -388,21 +399,38 @@ public class ChessMatch implements Serializable {
 		placeNewPiece('g', 2, new Pawn(board, this, Color.WHITE));
 		placeNewPiece('h', 2, new Pawn(board, this, Color.WHITE));
 
-		placeNewPiece('a', 8, new Rook(board, this, Color.BLACK));
-		placeNewPiece('b', 8, new Knight(board, this, Color.BLACK));
-		placeNewPiece('c', 8, new Bishop(board, this, Color.BLACK));
-		placeNewPiece('d', 8, new Queen(board, this, Color.BLACK));
-		placeNewPiece('e', 8, new King(board, this, Color.BLACK));
-		placeNewPiece('f', 8, new Bishop(board, this, Color.BLACK));
-		placeNewPiece('g', 8, new Knight(board, this, Color.BLACK));
-		placeNewPiece('h', 8, new Rook(board, this, Color.BLACK));
-		placeNewPiece('a', 7, new Pawn(board, this, Color.BLACK));
-		placeNewPiece('b', 7, new Pawn(board, this, Color.BLACK));
-		placeNewPiece('c', 7, new Pawn(board, this, Color.BLACK));
-		placeNewPiece('d', 7, new Pawn(board, this, Color.BLACK));
-		placeNewPiece('e', 7, new Pawn(board, this, Color.BLACK));
-		placeNewPiece('f', 7, new Pawn(board, this, Color.BLACK));
-		placeNewPiece('g', 7, new Pawn(board, this, Color.BLACK));
-		placeNewPiece('h', 7, new Pawn(board, this, Color.BLACK));
+		// placeNewPiece('a', 1, new Rook(board, this, Color.WHITE));
+		// placeNewPiece('b', 1, new Knight(board, this, Color.WHITE));
+		// placeNewPiece('c', 1, new Bishop(board, this, Color.WHITE));
+		// placeNewPiece('d', 1, new Queen(board, this, Color.WHITE));
+		// placeNewPiece('e', 1, new King(board, this, Color.WHITE));
+		// placeNewPiece('f', 1, new Bishop(board, this, Color.WHITE));
+		// placeNewPiece('g', 1, new Knight(board, this, Color.WHITE));
+		// placeNewPiece('h', 1, new Rook(board, this, Color.WHITE));
+		// placeNewPiece('a', 2, new Pawn(board, this, Color.WHITE));
+		// placeNewPiece('b', 2, new Pawn(board, this, Color.WHITE));
+		// placeNewPiece('c', 2, new Pawn(board, this, Color.WHITE));
+		// placeNewPiece('d', 2, new Pawn(board, this, Color.WHITE));
+		// placeNewPiece('e', 2, new Pawn(board, this, Color.WHITE));
+		// placeNewPiece('f', 2, new Pawn(board, this, Color.WHITE));
+		// placeNewPiece('g', 2, new Pawn(board, this, Color.WHITE));
+		// placeNewPiece('h', 2, new Pawn(board, this, Color.WHITE));
+		//
+		// placeNewPiece('a', 8, new Rook(board, this, Color.BLACK));
+		// placeNewPiece('b', 8, new Knight(board, this, Color.BLACK));
+		// placeNewPiece('c', 8, new Bishop(board, this, Color.BLACK));
+		// placeNewPiece('d', 8, new Queen(board, this, Color.BLACK));
+		// placeNewPiece('e', 8, new King(board, this, Color.BLACK));
+		// placeNewPiece('f', 8, new Bishop(board, this, Color.BLACK));
+		// placeNewPiece('g', 8, new Knight(board, this, Color.BLACK));
+		// placeNewPiece('h', 8, new Rook(board, this, Color.BLACK));
+		// placeNewPiece('a', 7, new Pawn(board, this, Color.BLACK));
+		// placeNewPiece('b', 7, new Pawn(board, this, Color.BLACK));
+		// placeNewPiece('c', 7, new Pawn(board, this, Color.BLACK));
+		// placeNewPiece('d', 7, new Pawn(board, this, Color.BLACK));
+		// placeNewPiece('e', 7, new Pawn(board, this, Color.BLACK));
+		// placeNewPiece('f', 7, new Pawn(board, this, Color.BLACK));
+		// placeNewPiece('g', 7, new Pawn(board, this, Color.BLACK));
+		// placeNewPiece('h', 7, new Pawn(board, this, Color.BLACK));
 	}
 }

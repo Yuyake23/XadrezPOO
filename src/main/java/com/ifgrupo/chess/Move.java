@@ -5,6 +5,6 @@ import com.ifgrupo.boardgame.Piece;
 public record Move(
         ChessPosition sourcePosition,
         ChessPosition targetPosition,
-        Piece capturedPiece,
+        String capturedPiece,
         String promotedPiece) {
 }
