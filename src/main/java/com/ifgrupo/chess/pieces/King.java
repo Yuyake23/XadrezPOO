@@ -99,4 +99,12 @@ public class King extends ChessPiece {
 
 		return pm;
 	}
+
+	@Override
+	public String getImagePath() {
+		if(color == Color.BLACK)
+			return "images/ReiPreto.png";
+		else 
+			return "imagens/ReiBranco.png";
+	}
 }

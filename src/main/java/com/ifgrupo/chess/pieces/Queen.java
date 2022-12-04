@@ -97,4 +97,12 @@ public class Queen extends ChessPiece {
 			pm[p.getRow()][p.getColumn()] = true;
 		return pm;
 	}
+	
+	@Override
+	public String getImagePath() {
+		if(color == Color.BLACK)
+			return "images/RainhaPreto.png";
+		else 
+			return "imagens/RainhaBranco.png";
+	}
 }

@@ -47,4 +47,12 @@ public class Knight extends ChessPiece {
 
 		return pm;
 	}
+
+	@Override
+	public String getImagePath() {
+		if(color == Color.BLACK)
+			return "images/CavaloPreto.png";
+		else 
+			return "imagens/CavaloBranco.png";
+	}
 }
