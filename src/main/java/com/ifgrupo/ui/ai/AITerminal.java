@@ -3,6 +3,7 @@ package com.ifgrupo.ui.ai;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Stack;
 
 import com.ifgrupo.boardgame.Piece;
 import com.ifgrupo.boardgame.Position;
@@ -14,12 +15,24 @@ import com.ifgrupo.ui.Terminal;
 
 public class AITerminal extends Terminal {
 
+	private static final int pawnValue = 10;
+	private static final int knightValue = 30;
+	private static final int bishopValue = 30;
+	private static final int rookValue = 50;
+	private static final int queenValue = 90;
+	private static final int kingValue = 900;
+
 	private Random r = new Random();
+	private int depth;
+	
+	private Stack<Movement> movements = new Stack<>();
+	
 	private ChessPosition source;
 	private ChessPosition target;
 
-	public AITerminal(Color playerColor, String name) {
+	public AITerminal(Color playerColor, int depth, String name) {
 		super(playerColor, name);
+		this.depth = depth;
 	}
 
 	@Override
@@ -33,13 +46,16 @@ public class AITerminal extends Terminal {
 				movablePieces.add(k);
 		}
 
-		chooseMoviment(movablePieces);
+		chooseMoviment(depth, movablePieces);
 
 		System.out.printf("Movimento: %s para %s%n", source, target);
 		return source;
 	}
 
-	private void chooseMoviment(List<ChessPiece> movablePieces) {
+	private void chooseMoviment(int n, List<ChessPiece> movablePieces) {
+		if (n == 0)
+			return;
+
 		ChessPiece chosenPiece = movablePieces.get(r.nextInt(movablePieces.size()));
 		List<ChessPosition> possibleMoves = possibleMovesMatrixToList(chosenPiece.getPossibleMoves());
 

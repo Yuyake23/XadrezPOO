@@ -153,7 +153,7 @@ public class Program {
 				} else if (args[3].equalsIgnoreCase("-g")) {
 					localTerminal = new GraphicTerminal(Color.BLACK, name);
 				} else if (args[3].equalsIgnoreCase("-a")) {
-					localTerminal = new AITerminal(Color.BLACK, name);
+					localTerminal = new AITerminal(Color.BLACK, 5, name);
 				} else {
 					System.out.println("-nc ip:porta -p2 (-b or -g) name");
 					System.exit(1);

@@ -1,9 +1,17 @@
 package com.ifgrupo.application;
 
-public interface Game {
+import com.ifgrupo.chess.ChessMatch;
 
-	public String chosePieceTypeToPromotion();
+public abstract class Game {
+	
+	protected ChessMatch chessMatch;
 
-	public void start();
+	public abstract String chosePieceTypeToPromotion();
+
+	public abstract void start();
+	
+	public void save() {
+//		chessMatch.getMoveDeque();
+	}
 
 }

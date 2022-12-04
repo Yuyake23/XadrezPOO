@@ -11,7 +11,7 @@ import com.ifgrupo.chess.ChessPosition;
 import com.ifgrupo.chess.Color;
 import com.ifgrupo.ui.Terminal;
 
-public class HostGame implements Game {
+public class HostGame extends Game {
 
 	private ChessMatch chessMatch;
 	private List<ChessPiece> capturedPieces;

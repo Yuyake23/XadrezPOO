@@ -10,7 +10,7 @@ import com.ifgrupo.chess.ChessPiece;
 import com.ifgrupo.chess.ChessPosition;
 import com.ifgrupo.ui.Terminal;
 
-public class LocalGame implements Game {
+public class LocalGame extends Game {
 
 	private ChessMatch chessMatch;
 	private List<ChessPiece> capturedPieces;
@@ -41,6 +41,7 @@ public class LocalGame implements Game {
 			}
 		}
 		terminal.finish(chessMatch, capturedPieces, chessMatch.getCurrentPlayer());
+		
 	}
 
 	@Override

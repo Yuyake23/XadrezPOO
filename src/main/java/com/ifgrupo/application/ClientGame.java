@@ -15,7 +15,7 @@ import com.ifgrupo.chess.Color;
 import com.ifgrupo.ui.Terminal;
 import com.ifgrupo.ui.network.enums.Description;
 
-public class ClientGame implements Game {
+public class ClientGame extends Game {
 
 	private Terminal localTerminal;
 	private Socket client;
@@ -48,7 +48,8 @@ public class ClientGame implements Game {
 						saida.writeObject(new Object[] { Description.PIECE_TYPE_TO_PROMOTION, pieceType });
 					}
 					case UPDATE -> {
-						this.localTerminal.update((ChessMatch) obj[1], (List<ChessPiece>) obj[2], (boolean[][]) obj[3]);
+						chessMatch = (ChessMatch) obj[1];
+						this.localTerminal.update(chessMatch, (List<ChessPiece>) obj[2], (boolean[][]) obj[3]);
 					}
 					case MESSAGE -> {
 						this.localTerminal.message((String) obj[1]);
