@@ -1,13 +1,12 @@
 package com.ifgrupo.chess;
 
 import java.io.Serial;
-import java.io.Serializable;
 
 import com.ifgrupo.boardgame.Board;
 import com.ifgrupo.boardgame.Piece;
 import com.ifgrupo.boardgame.Position;
 
-public abstract class ChessPiece extends Piece implements Serializable {
+public abstract class ChessPiece extends Piece {
 	@Serial
 	private static final long serialVersionUID = 692329559904442530L;
 
