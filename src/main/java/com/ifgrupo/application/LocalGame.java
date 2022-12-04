@@ -12,12 +12,11 @@ import com.ifgrupo.ui.Terminal;
 
 public class LocalGame extends Game {
 
-	private ChessMatch chessMatch;
 	private List<ChessPiece> capturedPieces;
 	private Terminal terminal;
 
 	public LocalGame(Terminal terminal, String namePlayer1, String namePlayer2) {
-		this.chessMatch = new ChessMatch();
+		super.chessMatch = new ChessMatch();
 		this.capturedPieces = new ArrayList<>();
 		this.terminal = terminal;
 	}

@@ -13,7 +13,6 @@ import com.ifgrupo.ui.Terminal;
 
 public class HostGame extends Game {
 
-	private ChessMatch chessMatch;
 	private List<ChessPiece> capturedPieces;
 
 	private Terminal whiteTerminal;
@@ -21,7 +20,7 @@ public class HostGame extends Game {
 	private Terminal currentPlayer;
 
 	public HostGame(Terminal whiteTerminal, Terminal blackTerminal) {
-		this.chessMatch = new ChessMatch();
+		super.chessMatch = new ChessMatch();
 		this.capturedPieces = new ArrayList<>();
 		this.whiteTerminal = whiteTerminal;
 		this.blackTerminal = blackTerminal;
