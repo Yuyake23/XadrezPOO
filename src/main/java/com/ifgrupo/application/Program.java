@@ -136,7 +136,13 @@ public class Program {
 			sc.close();
 		} catch (Exception e) {
 		}
-		game.save();
+		
+		try {
+			game.save();
+			System.out.println("O log da partida foi salvo.");
+		} catch (NoClassDefFoundError e) {
+			System.out.println("Nao foi possivel salvar o log da partida: Gson nao encontrado.");
+		}
 	}
 
 	private static void configureNetworkGameAsClient(String[] args) {
