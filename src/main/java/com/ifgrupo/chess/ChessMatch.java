@@ -2,7 +2,9 @@ package com.ifgrupo.chess;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,7 @@ public class ChessMatch implements Serializable {
 
 	private List<Piece> piecesOnTheBoard = new ArrayList<>();
 	private List<Piece> capturedPieces = new ArrayList<>();
+	private Deque<Move> moveDeque = new ArrayDeque<>();
 
 	public ChessMatch() {
 		this.board = new Board(8, 8);
@@ -66,6 +69,10 @@ public class ChessMatch implements Serializable {
 
 	public ChessPiece getEnPassantVulnerable() {
 		return enPassantVulnerable;
+	}
+
+	public Deque<Move> getMoveDeque() {
+		return this.moveDeque;
 	}
 
 	public boolean matchIsOver() {
@@ -126,10 +133,11 @@ public class ChessMatch implements Serializable {
 		ChessPiece movedPiece = (ChessPiece) board.getPiece(target);
 
 		// #specialmove promotion
+		String type = null;
 		if (movedPiece instanceof Pawn pawn) {
 			if (target.getRow() == 0 || target.getRow() == 7) {
 				ChessPiece pawnBackup = pawn.clone();
-				String type = Program.chosePieceTypeToPromotion(); // I don´t like it
+				type = Program.chosePieceTypeToPromotion(); // I don´t like it
 				try {
 					movedPiece = replacePromotedPiece(movedPiece, type);
 				} catch (ChessException e) {
@@ -166,6 +174,9 @@ public class ChessMatch implements Serializable {
 		if (!this.checkMate) {
 			nextTurn();
 		}
+
+		// movement logging
+		this.moveDeque.add(new Move(sourcePosition, targetPosition,  type));
 
 		// a tie logic
 		if (capturedPiece == null && !(movedPiece instanceof Pawn)) {
@@ -238,7 +249,7 @@ public class ChessMatch implements Serializable {
 		board.placePiece(piece, source);
 
 		if (capturedPiece != null) {
-			board.placePiece(capturedPiece, target);
+			board.placePiece(capturedPiece, capturedPiece.getPosition());
 			this.capturedPieces.remove(capturedPiece);
 			this.piecesOnTheBoard.add(capturedPiece);
 		}
