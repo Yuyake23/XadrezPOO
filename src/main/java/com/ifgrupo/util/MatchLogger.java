@@ -15,11 +15,12 @@ import com.ifgrupo.chess.Move;
 
 public class MatchLogger {
 
-	private Gson gson = new Gson();
+	private Gson gson;
 	private String logFile;
 
 	public MatchLogger(String logFile) {
 		this.logFile = logFile;
+		this.gson = new Gson();
 	}
 
 	public void log(Deque<Move> moveDeque) throws IOException {

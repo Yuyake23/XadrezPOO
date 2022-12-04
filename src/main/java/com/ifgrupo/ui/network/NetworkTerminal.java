@@ -113,7 +113,7 @@ public class NetworkTerminal extends Terminal {
 	public void finish(ChessMatch chessMatch, List<ChessPiece> capturedPieces, Color winner) {
 		try {
 			saida.reset();
-			saida.writeUnshared(new Object[] { Description.MESSAGE, chessMatch, capturedPieces, winner });
+			saida.writeUnshared(new Object[] { Description.FINISH, chessMatch, capturedPieces, winner });
 
 			releaseResources();
 		} catch (IOException e) {

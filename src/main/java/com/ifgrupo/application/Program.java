@@ -53,7 +53,7 @@ public class Program {
 				System.out.println("1 - Jogo local");
 				System.out.println("2 - Abrir partida LAN");
 				System.out.println("3 - Entrar em partida LAN");
-				System.out.println("  -> ");
+				System.out.print("  -> ");
 				gameType = GameType.typeByNumber(sc.nextInt());
 				sc.nextLine();
 
@@ -61,7 +61,7 @@ public class Program {
 					System.out.println("===== ESCOLHA UMA OPÇÃO =====");
 					System.out.println("b - Jogar aqui");
 					System.out.println("g - Jogar em interface gráfica");
-					System.out.println("  -> ");
+					System.out.print("  -> ");
 					char ui = sc.nextLine().charAt(0);
 					if (ui != 'b' && ui != 'g')
 						throw new IllegalArgumentException("Unexpected value: " + ui);
@@ -76,7 +76,7 @@ public class Program {
 					System.out.println("===== ESCOLHA UMA OPÇÃO =====");
 					System.out.println("b - Jogar aqui");
 					System.out.println("g - Jogar em interface gráfica");
-					System.out.println("  -> ");
+					System.out.print("  -> ");
 					char ui = sc.nextLine().charAt(0);
 					if (ui != 'b' && ui != 'g')
 						throw new IllegalArgumentException("Unexpected value: " + ui);
@@ -95,7 +95,7 @@ public class Program {
 					System.out.println("b - Jogar aqui");
 					System.out.println("g - Jogar em interface gráfica");
 					System.out.println("a - Inteligencia Artificial");
-					System.out.println("  -> ");
+					System.out.print("  -> ");
 					char ui = sc.nextLine().charAt(0);
 					if (ui != 'b' && ui != 'g' && ui != 'a')
 						throw new IllegalArgumentException("Unexpected value: " + ui);

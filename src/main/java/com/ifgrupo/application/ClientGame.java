@@ -48,8 +48,7 @@ public class ClientGame extends Game {
 						saida.writeObject(new Object[] { Description.PIECE_TYPE_TO_PROMOTION, pieceType });
 					}
 					case UPDATE -> {
-						super.chessMatch = (ChessMatch) obj[1];
-						this.localTerminal.update(chessMatch, (List<ChessPiece>) obj[2], (boolean[][]) obj[3]);
+						this.localTerminal.update((ChessMatch) obj[1], (List<ChessPiece>) obj[2], (boolean[][]) obj[3]);
 					}
 					case MESSAGE -> {
 						this.localTerminal.message((String) obj[1]);
@@ -58,6 +57,7 @@ public class ClientGame extends Game {
 						this.localTerminal.exceptionMessage((RuntimeException) obj[1]);
 					}
 					case FINISH -> {
+						super.chessMatch = (ChessMatch) obj[1];
 						this.localTerminal.finish((ChessMatch) obj[1], (List<ChessPiece>) obj[2], (Color) obj[3]);
 						try {
 							client.close();
