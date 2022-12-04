@@ -265,20 +265,6 @@ public class ChessMatch implements Serializable {
 				undoMove(new Position(source.getRow(), source.getColumn() - 4),
 						new Position(source.getRow(), source.getColumn() - 1), null);
 			}
-		} else
-		// #specialmove en passant
-		if (piece instanceof Pawn pawn && source.getColumn() != target.getColumn()
-				&& capturedPiece == enPassantVulnerable) {
-			if ((pawn.getColor() == Color.WHITE && pawn.getPosition().getRow() == 3)
-					|| (pawn.getColor() == Color.BLACK && pawn.getPosition().getRow() == 4)) {
-				pawn = (Pawn) board.removePiece(target);
-
-				if (piece.getColor() == Color.WHITE) {
-					board.placePiece(pawn, new Position(3, target.getColumn()));
-				} else {
-					board.placePiece(pawn, new Position(4, target.getColumn()));
-				}
-			}
 		}
 
 	}
