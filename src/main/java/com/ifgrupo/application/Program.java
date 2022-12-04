@@ -136,6 +136,7 @@ public class Program {
 			sc.close();
 		} catch (Exception e) {
 		}
+		game.save();
 	}
 
 	private static void configureNetworkGameAsClient(String[] args) {
