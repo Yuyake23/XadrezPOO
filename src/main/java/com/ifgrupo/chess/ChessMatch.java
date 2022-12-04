@@ -399,23 +399,6 @@ public class ChessMatch implements Serializable {
 		placeNewPiece('g', 2, new Pawn(board, this, Color.WHITE));
 		placeNewPiece('h', 2, new Pawn(board, this, Color.WHITE));
 
-		placeNewPiece('a', 1, new Rook(board, this, Color.WHITE));
-		placeNewPiece('b', 1, new Knight(board, this, Color.WHITE));
-		placeNewPiece('c', 1, new Bishop(board, this, Color.WHITE));
-		placeNewPiece('d', 1, new Queen(board, this, Color.WHITE));
-		placeNewPiece('e', 1, new King(board, this, Color.WHITE));
-		placeNewPiece('f', 1, new Bishop(board, this, Color.WHITE));
-		placeNewPiece('g', 1, new Knight(board, this, Color.WHITE));
-		placeNewPiece('h', 1, new Rook(board, this, Color.WHITE));
-		placeNewPiece('a', 2, new Pawn(board, this, Color.WHITE));
-		placeNewPiece('b', 2, new Pawn(board, this, Color.WHITE));
-		placeNewPiece('c', 2, new Pawn(board, this, Color.WHITE));
-		placeNewPiece('d', 2, new Pawn(board, this, Color.WHITE));
-		placeNewPiece('e', 2, new Pawn(board, this, Color.WHITE));
-		placeNewPiece('f', 2, new Pawn(board, this, Color.WHITE));
-		placeNewPiece('g', 2, new Pawn(board, this, Color.WHITE));
-		placeNewPiece('h', 2, new Pawn(board, this, Color.WHITE));
-		
 		placeNewPiece('a', 8, new Rook(board, this, Color.BLACK));
 		placeNewPiece('b', 8, new Knight(board, this, Color.BLACK));
 		placeNewPiece('c', 8, new Bishop(board, this, Color.BLACK));

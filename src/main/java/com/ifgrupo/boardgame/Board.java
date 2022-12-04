@@ -53,7 +53,7 @@ public class Board implements Serializable{
 		Piece a = getPiece(position);
 		if (a == null)
 			return null;
-		a.position = null;
+		// a.position = null;
 		pieces[position.getRow()][position.getColumn()] = null;
 		return a;
 	}
