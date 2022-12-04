@@ -102,4 +102,4 @@ local.properties
 
 target/
 .vscode/settings.json
-log.json
+*.json
