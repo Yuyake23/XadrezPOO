@@ -82,9 +82,4 @@ public class ClientGame implements Game {
 		return localTerminal.chosePieceTypeToPromotion();
 	}
 
-//	@Override
-//	public void message(String s) {
-//		localTerminal.message(s);
-//	}
-
 }

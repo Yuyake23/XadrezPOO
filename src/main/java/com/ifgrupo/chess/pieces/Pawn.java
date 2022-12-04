@@ -65,7 +65,6 @@ public class Pawn extends ChessPiece {
 
 		// #specialmove en passant
 		if (chessMatch.getEnPassantVulnerable() != null) {
-//			System.out.println("tem peça vulneralvel a en passant");
 			if (position.getRow() == 3 || position.getRow() == 4) {
 				p.setValues(position.getRow(), position.getColumn() - 1); // left
 				if (getBoard().positionExists(p) && isThereOpponentPiece(p)

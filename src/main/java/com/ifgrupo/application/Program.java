@@ -49,22 +49,19 @@ public class Program {
 
 		if (args.length == 0) {
 			try {
-
-				System.out.print("""
-						===== ESCOLHA UMA OPÇÃO =====
-						1 - Jogo local
-						2 - Abrir partida LAN
-						3 - Entrar em partida LAN
-						  -> """);
+				System.out.println("===== ESCOLHA UMA OPÇÃO =====");
+				System.out.println("1 - Jogo local");
+				System.out.println("2 - Abrir partida LAN");
+				System.out.println("3 - Entrar em partida LAN");
+				System.out.println("  -> ");
 				gameType = GameType.typeByNumber(sc.nextInt());
 				sc.nextLine();
 
 				if (gameType == GameType.LOCAL) {
-					System.out.print("""
-							===== ESCOLHA UMA OPÇÃO =====
-							b - Jogar aqui
-							g - Jogar em interface gráfica
-							  -> """);
+					System.out.println("===== ESCOLHA UMA OPÇÃO =====");
+					System.out.println("b - Jogar aqui");
+					System.out.println("g - Jogar em interface gráfica");
+					System.out.println("  -> ");
 					char ui = sc.nextLine().charAt(0);
 					if (ui != 'b' && ui != 'g')
 						throw new IllegalArgumentException("Unexpected value: " + ui);
@@ -76,11 +73,10 @@ public class Program {
 
 					args = new String[] { "-p1", "-" + ui, name1, "-p2", "-" + ui, name2 };
 				} else if (gameType == GameType.HOST) {
-					System.out.print("""
-							===== ESCOLHA UMA OPÇÃO =====
-							b - Jogar aqui
-							g - Jogar em interface gráfica
-							  -> """);
+					System.out.println("===== ESCOLHA UMA OPÇÃO =====");
+					System.out.println("b - Jogar aqui");
+					System.out.println("g - Jogar em interface gráfica");
+					System.out.println("  -> ");
 					char ui = sc.nextLine().charAt(0);
 					if (ui != 'b' && ui != 'g')
 						throw new IllegalArgumentException("Unexpected value: " + ui);
@@ -95,12 +91,11 @@ public class Program {
 					if (!socket.matches("[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[:][0-9]{1,6}"))
 						throw new IllegalArgumentException("Unexpected value: " + socket);
 
-					System.out.print("""
-							===== ESCOLHA UMA OPÇÃO =====
-							b - Jogar aqui
-							g - Jogar em interface gráfica
-							a - Inteligencia Artificial
-							  -> """);
+					System.out.println("===== ESCOLHA UMA OPÇÃO =====");
+					System.out.println("b - Jogar aqui");
+					System.out.println("g - Jogar em interface gráfica");
+					System.out.println("a - Inteligencia Artificial");
+					System.out.println("  -> ");
 					char ui = sc.nextLine().charAt(0);
 					if (ui != 'b' && ui != 'g' && ui != 'a')
 						throw new IllegalArgumentException("Unexpected value: " + ui);

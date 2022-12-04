@@ -3,7 +3,7 @@ package com.ifgrupo.boardgame;
 import java.io.Serial;
 import java.io.Serializable;
 
-public class Board implements Serializable{
+public class Board implements Serializable {
 	@Serial
 	private static final long serialVersionUID = -2745932311301004228L;
 
@@ -53,7 +53,6 @@ public class Board implements Serializable{
 		Piece a = getPiece(position);
 		if (a == null)
 			return null;
-		// a.position = null;
 		pieces[position.getRow()][position.getColumn()] = null;
 		return a;
 	}

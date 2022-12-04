@@ -1,6 +1,6 @@
 package com.ifgrupo.chess;
 
-public enum Color{
+public enum Color {
 	BLACK,
 	WHITE;
 }

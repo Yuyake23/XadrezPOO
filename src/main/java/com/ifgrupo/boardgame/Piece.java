@@ -3,7 +3,7 @@ package com.ifgrupo.boardgame;
 import java.io.Serial;
 import java.io.Serializable;
 
-public abstract class Piece implements Serializable{
+public abstract class Piece implements Serializable {
 	@Serial
 	private static final long serialVersionUID = -6453738799351240322L;
 

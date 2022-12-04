@@ -157,5 +157,5 @@ public class NetworkTerminal extends Terminal {
 			System.out.println("Falha ao liberar recursos: " + e.getMessage());
 		}
 	}
-	
+
 }

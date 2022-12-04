@@ -12,12 +12,7 @@ import com.ifgrupo.application.Program;
 import com.ifgrupo.boardgame.Board;
 import com.ifgrupo.boardgame.Piece;
 import com.ifgrupo.boardgame.Position;
-import com.ifgrupo.chess.pieces.Bishop;
-import com.ifgrupo.chess.pieces.King;
-import com.ifgrupo.chess.pieces.Knight;
-import com.ifgrupo.chess.pieces.Pawn;
-import com.ifgrupo.chess.pieces.Queen;
-import com.ifgrupo.chess.pieces.Rook;
+import com.ifgrupo.chess.pieces.*;
 
 public class ChessMatch implements Serializable {
 	@Serial
@@ -26,7 +21,7 @@ public class ChessMatch implements Serializable {
 	private Board board;
 	private int turn;
 	private Color currentPlayerColor;
-	private boolean check; // is false by default
+	private boolean check; // it is false by default
 	private boolean checkMate;
 	private Pawn enPassantVulnerable;
 
@@ -176,7 +171,7 @@ public class ChessMatch implements Serializable {
 		}
 
 		// movement logging
-		this.moveDeque.add(new Move(sourcePosition, targetPosition,  type));
+		this.moveDeque.add(new Move(sourcePosition, targetPosition, type));
 
 		// a tie logic
 		if (capturedPiece == null && !(movedPiece instanceof Pawn)) {

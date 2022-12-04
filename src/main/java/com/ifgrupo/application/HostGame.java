@@ -77,9 +77,4 @@ public class HostGame implements Game {
 		return whiteTerminal.chosePieceTypeToPromotion();
 	}
 
-//	@Override
-//	public void message(String s) {
-//		currentPlayer.message(s);
-//	}
-
 }

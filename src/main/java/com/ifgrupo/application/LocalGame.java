@@ -48,8 +48,4 @@ public class LocalGame implements Game {
 		return terminal.chosePieceTypeToPromotion();
 	}
 
-//	@Override
-//	public void message(String s) {
-//		terminal.message(s);
-//	}
 }

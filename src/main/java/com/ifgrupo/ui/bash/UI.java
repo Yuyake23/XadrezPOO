@@ -14,7 +14,13 @@ import com.ifgrupo.chess.pieces.King;
 
 public class UI {
 	public enum FontType {
-		PLAIN, BOLD, UNDERLINED, BRIGHT, BACKGROUND, BOLD_BRIGHT, BACKGROUNG_BRIGHT
+		PLAIN,
+		BOLD,
+		UNDERLINED,
+		BRIGHT,
+		BACKGROUND,
+		BOLD_BRIGHT,
+		BACKGROUNG_BRIGHT;
 	}
 
 	// Bold
