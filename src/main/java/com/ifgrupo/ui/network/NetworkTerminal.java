@@ -9,7 +9,6 @@ import java.util.List;
 
 import com.ifgrupo.chess.ChessMatch;
 import com.ifgrupo.chess.ChessPiece;
-import com.ifgrupo.chess.ChessPosition;
 import com.ifgrupo.chess.Color;
 import com.ifgrupo.ui.Terminal;
 import com.ifgrupo.ui.bash.UI;
@@ -37,15 +36,19 @@ public class NetworkTerminal extends Terminal {
 	}
 
 	@Override
-	public ChessPosition readSourcePosition(ChessMatch chessMatch, List<ChessPiece> capturedPieces) {
-		ChessPosition chessPosition = null;
+	public String readSourcePosition() {
+		String chessPosition = null;
 		try {
 			saida.reset();
-			saida.writeUnshared(new Object[] { Description.SOURCE_POSITION, chessMatch, capturedPieces });
+			saida.writeUnshared(new Object[] { Description.SOURCE_POSITION });
 
 			Object[] obj = (Object[]) entrada.readObject();
 			if ((Description) obj[0] == Description.SOURCE_POSITION) {
-				chessPosition = (ChessPosition) obj[1];
+				chessPosition = (String) obj[1];
+			} else if ((Description) obj[0] == Description.EXCEPTION) {
+				saida.reset();
+				saida.writeUnshared(new Object[] { Description.MESSAGE, "Valid values are from a1 to h8." });
+				return this.readSourcePosition();
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			releaseResources();
@@ -56,17 +59,20 @@ public class NetworkTerminal extends Terminal {
 	}
 
 	@Override
-	public ChessPosition readTargetPosition(ChessMatch chessMatch, List<ChessPiece> capturedPieces,
-			boolean[][] possibleMoves) {
-		ChessPosition chessPosition = null;
+	public String readTargetPosition() {
+		String chessPosition = null;
 		try {
 			saida.reset();
 			saida.writeUnshared(
-					new Object[] { Description.TARGET_POSITION, chessMatch, capturedPieces, possibleMoves });
+					new Object[] { Description.TARGET_POSITION});
 
 			Object[] obj = (Object[]) entrada.readObject();
 			if ((Description) obj[0] == Description.TARGET_POSITION) {
-				chessPosition = (ChessPosition) obj[1];
+				chessPosition = (String) obj[1];
+			} else if ((Description) obj[0] == Description.EXCEPTION) {
+				saida.reset();
+				saida.writeUnshared(new Object[] { Description.MESSAGE, "Valid values are from a1 to h8." });
+				return this.readSourcePosition();
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			releaseResources();

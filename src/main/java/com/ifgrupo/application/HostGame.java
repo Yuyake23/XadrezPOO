@@ -1,6 +1,7 @@
 package com.ifgrupo.application;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import com.ifgrupo.chess.ChessException;
 import com.ifgrupo.chess.ChessMatch;
 import com.ifgrupo.chess.ChessPiece;
 import com.ifgrupo.chess.ChessPosition;
-import com.ifgrupo.chess.Color;
+import com.ifgrupo.chess.pieces.PieceType;
 import com.ifgrupo.ui.Terminal;
 
 public class HostGame extends Game {
@@ -28,39 +29,52 @@ public class HostGame extends Game {
 
 	@Override
 	public void start() {
+		ChessPosition source = null, target = null;
+		PieceType pieceTypeToPromote;
+		ChessPiece capturedPiece;
+		String[] r;
+
 		currentPlayer = whiteTerminal;
 
-		currentPlayer.update(chessMatch, capturedPieces, null);
-		opponent(currentPlayer).update(chessMatch, capturedPieces, null);
-
 		while (!chessMatch.matchIsOver()) {
+			pieceTypeToPromote = null;
 			try {
+				currentPlayer.update(chessMatch, capturedPieces, null);
+				opponent(currentPlayer).update(chessMatch, capturedPieces, null);
 
-				if (chessMatch.getCurrentPlayer() == Color.WHITE) {
-					currentPlayer = whiteTerminal;
-				} else {
-					currentPlayer = blackTerminal;
+				r = currentPlayer.readSourcePosition().split(" ");
+
+				System.out.println(Arrays.toString(r));
+
+				if (r.length > 2) {
+					System.out.println("MAIOR QUE DOIS AQUIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+					pieceTypeToPromote = PieceType.pieceTypeByChar(r[2]);
+					System.out.println("Peça: " + pieceTypeToPromote);
 				}
 
-				ChessPosition source, target;
-				ChessPiece capturedPiece;
-				boolean possibleMovies[][];
-				source = currentPlayer.readSourcePosition(chessMatch, capturedPieces);
-				possibleMovies = chessMatch.possibleMovies(source);
-				opponent(currentPlayer).update(chessMatch, capturedPieces, possibleMovies);
+				if (r.length > 1)
+					target = new ChessPosition(r[1]);
+				source = new ChessPosition(r[0]);
 
-				target = currentPlayer.readTargetPosition(chessMatch, capturedPieces, possibleMovies);
+				if (r.length == 1) {
+					currentPlayer.update(chessMatch, capturedPieces, chessMatch.possibleMovies(source));
+					opponent(currentPlayer).update(chessMatch, capturedPieces, chessMatch.possibleMovies(source));
+					r = currentPlayer.readTargetPosition().split(" ");
+					target = new ChessPosition(r[0]);
+					if (r.length > 1)
+						pieceTypeToPromote = PieceType.pieceTypeByChar(r[1]);
+				}
 
-				capturedPiece = chessMatch.performChessMove(source, target);
+				capturedPiece = chessMatch.performChessMove(source, target, pieceTypeToPromote);
 
 				if (capturedPiece != null)
 					capturedPieces.add(capturedPiece);
+
+				currentPlayer = opponent(currentPlayer);
 			} catch (NullPointerException | InputMismatchException | NumberFormatException | ChessException
 					| ClassCastException e) {
-				e.printStackTrace();
+				currentPlayer.exceptionMessage(e);
 			}
-			currentPlayer.update(chessMatch, capturedPieces, null);
-			opponent(currentPlayer).update(chessMatch, capturedPieces, null);
 		}
 
 		whiteTerminal.finish(chessMatch, capturedPieces, chessMatch.getWinner());
@@ -73,7 +87,7 @@ public class HostGame extends Game {
 
 	@Override
 	public String chosePieceTypeToPromotion() {
-		return whiteTerminal.chosePieceTypeToPromotion();
+		return currentPlayer.chosePieceTypeToPromotion();
 	}
 
 }

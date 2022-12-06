@@ -13,6 +13,7 @@ import com.ifgrupo.chess.ChessPosition;
 import com.ifgrupo.chess.Color;
 import com.ifgrupo.ui.Terminal;
 
+@SuppressWarnings("unused")
 public class AITerminal extends Terminal {
 
 	private static final int pawnValue = 10;
@@ -21,22 +22,25 @@ public class AITerminal extends Terminal {
 	private static final int rookValue = 50;
 	private static final int queenValue = 90;
 	private static final int kingValue = 900;
-
+	
+	
+	private ChessMatch chessMatch;
+	private List<ChessPiece> capturedPieces;
+	private boolean[][] possibleMoves;
+	private ChessPosition source;
+	private ChessPosition target;
+	
+	private Stack<Movement> movements = new Stack<>();
 	private Random r = new Random();
 	private int depth;
 	
-	private Stack<Movement> movements = new Stack<>();
-	
-	private ChessPosition source;
-	private ChessPosition target;
-
 	public AITerminal(Color playerColor, int depth, String name) {
 		super(playerColor, name);
 		this.depth = depth;
 	}
 
 	@Override
-	public ChessPosition readSourcePosition(ChessMatch chessMatch, List<ChessPiece> capturedPieces) {
+	public String readSourcePosition() {
 		List<Piece> piecesOnTheBoard = chessMatch.getPiecesOnTheBoard();
 		List<ChessPiece> movablePieces = new ArrayList<>();
 
@@ -49,7 +53,7 @@ public class AITerminal extends Terminal {
 		chooseMoviment(depth, movablePieces);
 
 		System.out.printf("Movimento: %s para %s%n", source, target);
-		return source;
+		return source.toString();
 	}
 
 	private void chooseMoviment(int n, List<ChessPiece> movablePieces) {
@@ -75,9 +79,8 @@ public class AITerminal extends Terminal {
 	}
 
 	@Override
-	public ChessPosition readTargetPosition(ChessMatch chessMatch, List<ChessPiece> capturedPieces,
-			boolean[][] possibleMoves) {
-		return this.target;
+	public String readTargetPosition() {
+		return this.target.toString();
 	}
 
 	@Override
@@ -105,8 +108,9 @@ public class AITerminal extends Terminal {
 
 	@Override
 	public void update(ChessMatch chessMatch, List<ChessPiece> capturedPieces, boolean[][] possibleMoves) {
-		// TODO Auto-generated method stub
-
+		this.chessMatch = chessMatch;
+		this.capturedPieces = capturedPieces;
+		this.possibleMoves = possibleMoves;
 	}
 
 }

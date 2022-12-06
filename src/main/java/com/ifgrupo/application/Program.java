@@ -199,10 +199,7 @@ public class Program {
 			Socket client = host.accept();
 			System.out.println("Cliente conectado: " + client.getInetAddress().getHostAddress());
 
-			String clientName = "jubiscreia";
-
-			whitePlayer.message("Nome do cliente: " + clientName);
-			Program.blackPlayer = new NetworkTerminal(Color.BLACK, clientName, host, client);
+			Program.blackPlayer = new NetworkTerminal(Color.BLACK, "", host, client);
 
 			Program.game = new HostGame(whitePlayer, blackPlayer);
 		} catch (IOException e) {

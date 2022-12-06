@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 import com.ifgrupo.chess.ChessMatch;
 import com.ifgrupo.chess.ChessPiece;
-import com.ifgrupo.chess.ChessPosition;
 import com.ifgrupo.chess.Color;
 import com.ifgrupo.ui.Terminal;
 
@@ -19,31 +18,28 @@ public class BashTerminal extends Terminal {
 	}
 
 	@Override
-	public ChessPosition readSourcePosition(ChessMatch chessMatch, List<ChessPiece> capturedPieces) {
-		UI.clearScreen();
-		UI.printMatch(chessMatch, capturedPieces);
+	public String readSourcePosition() {
 		System.out.print("\nOrigem: ");
 		try {
-			String s = sc.nextLine();
-			char column = s.charAt(0);
-			int row = Integer.parseInt(s.substring(1));
-			return new ChessPosition(column, row);
+			return sc.nextLine().trim();
+//			String s = sc.nextLine();
+//			char column = s.charAt(0);
+//			int row = Integer.parseInt(s.substring(1));
+//			return new ChessPosition(column, row);
 		} catch (RuntimeException e) {
 			throw new InputMismatchException("Error reading ChessPosition. Valid values are from a1 to h8");
 		}
 	}
 
 	@Override
-	public ChessPosition readTargetPosition(ChessMatch chessMatch, List<ChessPiece> capturedPieces,
-			boolean[][] possibleMoves) {
-		UI.clearScreen();
-		UI.printMatch(chessMatch, capturedPieces, possibleMoves);
+	public String readTargetPosition() {
 		System.out.print("\nDestino: ");
 		try {
-			String s = sc.nextLine();
-			char column = s.charAt(0);
-			int row = Integer.parseInt(s.substring(1));
-			return new ChessPosition(column, row);
+			return sc.nextLine().trim();
+//			String s = sc.nextLine();
+//			char column = s.charAt(0);
+//			int row = Integer.parseInt(s.substring(1));
+//			return new ChessPosition(column, row);
 		} catch (RuntimeException e) {
 			throw new InputMismatchException("Error reading ChessPosition. Valid values are from a1 to h8");
 		}
@@ -58,8 +54,6 @@ public class BashTerminal extends Terminal {
 	@Override
 	public void message(String s) {
 		System.out.println(s);
-		System.out.println("Type <Enter>");
-		sc.nextLine();
 	}
 
 	@Override

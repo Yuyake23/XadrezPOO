@@ -20,6 +20,26 @@ public class ChessPosition implements Serializable {
 		this.row = row;
 	}
 
+	public ChessPosition(String position) {
+		try {
+			char column = position.charAt(0);
+			int row = Character.getNumericValue(position.charAt(1));
+
+			System.out.println("Coluna: " + column);
+			System.out.println("Linha: " + row);
+			if (column < 'a' || column > 'h' || row < 1 || row > 8)
+				throw new ChessException("Error instantiating ChessPosition. Valid values are from a1 to h8.");
+
+			this.column = column;
+			this.row = row;
+		} catch (ChessException e) {
+			throw e;
+		} catch (RuntimeException e) {
+			throw new ChessException("Error instantiating ChessPosition. Valid values are from a1 to h8.");
+		}
+		System.out.println("ChessPosition criada! " + toString());
+	}
+
 	public char getColumn() {
 		return column;
 	}

@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.ifgrupo.chess.ChessMatch;
 import com.ifgrupo.chess.ChessPiece;
-import com.ifgrupo.chess.ChessPosition;
 import com.ifgrupo.chess.Color;
 import com.ifgrupo.ui.Terminal;
 
@@ -16,14 +15,13 @@ public class GraphicTerminal extends Terminal {
 	}
 
 	@Override
-	public ChessPosition readSourcePosition(ChessMatch chessMatch, List<ChessPiece> capturedPieces) {
+	public String readSourcePosition() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ChessPosition readTargetPosition(ChessMatch chessMatch, List<ChessPiece> capturedPieces,
-			boolean[][] possibleMoves) {
+	public String readTargetPosition() {
 		// TODO Auto-generated method stub
 		return null;
 	}

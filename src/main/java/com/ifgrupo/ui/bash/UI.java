@@ -1,14 +1,11 @@
 package com.ifgrupo.ui.bash;
 
 import java.util.Arrays;
-import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import com.ifgrupo.chess.ChessMatch;
 import com.ifgrupo.chess.ChessPiece;
-import com.ifgrupo.chess.ChessPosition;
 import com.ifgrupo.chess.Color;
 import com.ifgrupo.chess.pieces.King;
 
@@ -95,17 +92,6 @@ public class UI {
 	public static void clearScreen() {
 		System.out.print("\033[H\033[2J");
 		System.out.flush();
-	}
-
-	public static ChessPosition readChessPosition(Scanner sc) {
-		try {
-			String s = sc.nextLine();
-			char column = s.charAt(0);
-			int row = Integer.parseInt(s.substring(1));
-			return new ChessPosition(column, row);
-		} catch (RuntimeException e) {
-			throw new InputMismatchException("Error reading ChessPosition. Valid values are from a1 to h8");
-		}
 	}
 
 	public static void printMatch(ChessMatch chessMatch, List<ChessPiece> capturedPieces, boolean[][] possibleMoves) {

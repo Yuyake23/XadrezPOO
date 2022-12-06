@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.ifgrupo.chess.ChessMatch;
 import com.ifgrupo.chess.ChessPiece;
-import com.ifgrupo.chess.ChessPosition;
 import com.ifgrupo.chess.Color;
 
 public abstract class Terminal {
@@ -17,10 +16,9 @@ public abstract class Terminal {
 		this.name = name;
 	}
 
-	public abstract ChessPosition readSourcePosition(ChessMatch chessMatch, List<ChessPiece> capturedPieces);
+	public abstract String readSourcePosition();
 
-	public abstract ChessPosition readTargetPosition(ChessMatch chessMatch, List<ChessPiece> capturedPieces,
-			boolean[][] possibleMoves);
+	public abstract String readTargetPosition();
 
 	public abstract String chosePieceTypeToPromotion();
 
