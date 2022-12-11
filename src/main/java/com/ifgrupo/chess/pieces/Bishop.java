@@ -69,6 +69,6 @@ public class Bishop extends ChessPiece {
 		if(color == Color.BLACK)
 			return "images/BispoPreto.png";
 		else 
-			return "imagens/BispoBranco.png";
+			return "images/BispoBranco.png";
 	}
 }

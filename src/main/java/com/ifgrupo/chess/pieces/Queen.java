@@ -103,6 +103,6 @@ public class Queen extends ChessPiece {
 		if(color == Color.BLACK)
 			return "images/RainhaPreto.png";
 		else 
-			return "imagens/RainhaBranco.png";
+			return "images/RainhaBranco.png";
 	}
 }

@@ -136,7 +136,7 @@ public class Program {
 			sc.close();
 		} catch (Exception e) {
 		}
-		
+
 		try {
 			game.save();
 			System.out.println("O log da partida foi salvo.");
@@ -228,10 +228,10 @@ public class Program {
 					i++;
 					if (args[i].equalsIgnoreCase("-b")) {
 						i++;
-						Program.blackPlayer = new BashTerminal(Color.BLACK, args[i]);
+//						Program.blackPlayer = new BashTerminal(Color.BLACK, args[i]);
 					} else if (args[i].equalsIgnoreCase("-g")) {
 						i++;
-						Program.blackPlayer = new GraphicTerminal(Color.BLACK, args[i]);
+//						Program.blackPlayer = new GraphicTerminal(Color.BLACK, args[i]);
 					} else {
 						System.out.println("-p1 (-b or -g) namePlayer1 -p2 (-b or -g) namePlayer2");
 						System.exit(1);
@@ -242,12 +242,13 @@ public class Program {
 				}
 			}
 		} catch (NullPointerException e) {
+			e.printStackTrace();
 			System.out.println("-p1 (-b or -g) namePlayer1 -p2 (-b or -g) namePlayer2");
 			System.exit(1);
 		}
 
 		whitePlayer.setPlayerColor(null);
-		Program.game = new LocalGame(whitePlayer, whitePlayer.getName(), blackPlayer.getName());
+		Program.game = new LocalGame(whitePlayer, whitePlayer.getName(), "");
 	}
 
 	public static String chosePieceTypeToPromotion() {

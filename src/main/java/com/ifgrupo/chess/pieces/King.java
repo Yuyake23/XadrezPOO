@@ -105,6 +105,6 @@ public class King extends ChessPiece {
 		if(color == Color.BLACK)
 			return "images/ReiPreto.png";
 		else 
-			return "imagens/ReiBranco.png";
+			return "images/ReiBranco.png";
 	}
 }

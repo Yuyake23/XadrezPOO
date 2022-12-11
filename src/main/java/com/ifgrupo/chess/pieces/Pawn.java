@@ -87,6 +87,6 @@ public class Pawn extends ChessPiece {
 		if(color == Color.BLACK)
 			return "images/PeaoPreto.png";
 		else 
-			return "imagens/PeaoBranco.png";
+			return "images/PeaoBranco.png";
 	}
 }

@@ -53,6 +53,6 @@ public class Knight extends ChessPiece {
 		if(color == Color.BLACK)
 			return "images/CavaloPreto.png";
 		else 
-			return "imagens/CavaloBranco.png";
+			return "images/CavaloBranco.png";
 	}
 }

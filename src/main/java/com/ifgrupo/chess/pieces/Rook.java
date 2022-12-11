@@ -68,6 +68,6 @@ public class Rook extends ChessPiece {
 		if(color == Color.BLACK)
 			return "images/TorrePreto.png";
 		else 
-			return "imagens/TorreBranco.png";
+			return "images/TorreBranco.png";
 	}
 }
