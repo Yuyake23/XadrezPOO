@@ -11,7 +11,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.ifgrupo.chess.ChessMatch;
 import com.ifgrupo.chess.ChessPiece;
+import com.ifgrupo.chess.pieces.King;
 
 public class Frame extends JFrame {
 	@Serial
@@ -70,7 +72,8 @@ public class Frame extends JFrame {
 			this.setLayout(this.boardLayout);
 		}
 
-		void update(ChessPiece[][] pieces) {
+		void update(ChessMatch chessMatch) {
+			ChessPiece[][] pieces = chessMatch.getPieces();
 			System.out.println("ATUALIZANDO TELA");
 			for (int i = 0; i < pieces.length; i++) {
 				for (int j = 0; j < pieces[i].length; j++) {
@@ -80,14 +83,18 @@ public class Frame extends JFrame {
 					} else {
 						this.pieces[i][j].setIcon(null);
 					}
-					this.pieces[i][j].setBackground((i + j) % 2 == 0 ? Color.LIGHT_GRAY : Color.GRAY);
+					if (chessMatch.getCheck() && pieces[i][j] instanceof King k
+							&& k.getColor() == chessMatch.getCurrentPlayer())
+						this.pieces[i][j].setBackground(Color.RED);
+					else
+						this.pieces[i][j].setBackground((i + j) % 2 == 0 ? Color.LIGHT_GRAY : Color.GRAY);
 				}
 			}
 			this.setLayout(this.boardLayout);
 		}
 
-		void update(ChessPiece[][] pieces, boolean possibleMoves[][]) {
-			update(pieces);
+		void update(ChessMatch chessMatch, boolean[][] possibleMoves) {
+			update(chessMatch);
 			for (int i = 0; i < possibleMoves.length; i++) {
 				for (int j = 0; j < possibleMoves[i].length; j++) {
 					if (possibleMoves[i][j]) {
