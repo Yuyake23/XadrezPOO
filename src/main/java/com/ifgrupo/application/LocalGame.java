@@ -24,12 +24,14 @@ public class LocalGame extends Game {
 
 	@Override
 	public void start() {
-		ChessPosition source = null, target = null;
+		ChessPosition source, target;
 		PieceType pieceTypeToPromote;
 		ChessPiece capturedPiece;
 		String r[];
 
 		while (!chessMatch.matchIsOver()) {
+			source = null;
+			target = null;
 			pieceTypeToPromote = null;
 			try {
 				terminal.update(chessMatch, capturedPieces, null);
@@ -55,7 +57,7 @@ public class LocalGame extends Game {
 					capturedPieces.add(capturedPiece);
 
 			} catch (InputMismatchException | NumberFormatException | ChessException e) {
-				if (target != null && !target.equals(source))
+				if (target == null || !target.equals(source))
 					terminal.exceptionMessage(e);
 			}
 		}
