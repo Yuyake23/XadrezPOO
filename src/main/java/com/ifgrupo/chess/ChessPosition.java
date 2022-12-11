@@ -2,6 +2,7 @@ package com.ifgrupo.chess;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 import com.ifgrupo.boardgame.Position;
 
@@ -51,6 +52,23 @@ public class ChessPosition implements Serializable {
 
 	public static ChessPosition fromPosition(Position position) {
 		return new ChessPosition((char) (position.getColumn() + 'a'), 8 - position.getRow());
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(column, row);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ChessPosition other = (ChessPosition) obj;
+		return column == other.column && row == other.row;
 	}
 
 	@Override

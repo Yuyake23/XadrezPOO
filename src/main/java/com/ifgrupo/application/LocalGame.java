@@ -55,7 +55,8 @@ public class LocalGame extends Game {
 					capturedPieces.add(capturedPiece);
 
 			} catch (InputMismatchException | NumberFormatException | ChessException e) {
-				terminal.exceptionMessage(e);
+				if (target != null && !target.equals(source))
+					terminal.exceptionMessage(e);
 			}
 		}
 
