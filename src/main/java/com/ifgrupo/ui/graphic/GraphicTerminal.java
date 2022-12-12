@@ -23,20 +23,15 @@ public class GraphicTerminal extends Terminal {
 
 	@Override
 	public String readSourcePosition() {
-		try {
-			sem.acquire();
-			sem.acquire();
-			sem.release();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		String r = frame.returnString;
-		frame.returnString = null;
-		return r;
+		return waitValue();
 	}
 
 	@Override
 	public String readTargetPosition() {
+		return waitValue();
+	}
+
+	private String waitValue() {
 		try {
 			sem.acquire();
 			sem.acquire();
