@@ -98,11 +98,4 @@ public class Queen extends ChessPiece {
 		return pm;
 	}
 	
-	@Override
-	public String getImagePath() {
-		if(color == Color.BLACK)
-			return "images/RainhaPreto.png";
-		else 
-			return "images/RainhaBranco.png";
-	}
 }

@@ -63,11 +63,4 @@ public class Rook extends ChessPiece {
 		return pm;
 	}
 	
-	@Override
-	public String getImagePath() {
-		if(color == Color.BLACK)
-			return "images/TorrePreto.png";
-		else 
-			return "images/TorreBranco.png";
-	}
 }

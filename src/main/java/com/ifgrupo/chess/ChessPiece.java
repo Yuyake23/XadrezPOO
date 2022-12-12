@@ -56,6 +56,4 @@ public abstract class ChessPiece extends Piece {
 	@Override
 	public abstract boolean[][] getAllPossibleMoves();
 	
-	public abstract String getImagePath();
-
 }

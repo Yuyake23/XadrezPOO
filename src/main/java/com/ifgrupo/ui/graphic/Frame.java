@@ -74,12 +74,10 @@ public class Frame extends JFrame {
 
 		void update(ChessMatch chessMatch) {
 			ChessPiece[][] pieces = chessMatch.getPieces();
-			System.out.println("ATUALIZANDO TELA");
 			for (int i = 0; i < pieces.length; i++) {
 				for (int j = 0; j < pieces[i].length; j++) {
 					if (pieces[i][j] != null) {
-						ImageIcon icon = new ImageIcon(pieces[i][j].getImagePath());
-						this.pieces[i][j].setIcon(icon);
+						this.pieces[i][j].setIcon(extracted(pieces[i][j]));
 					} else {
 						this.pieces[i][j].setIcon(null);
 					}
@@ -91,6 +89,11 @@ public class Frame extends JFrame {
 				}
 			}
 			this.setLayout(this.boardLayout);
+		}
+
+		private ImageIcon extracted(ChessPiece piece) {
+			return new ImageIcon(getClass().getResource("/com/ifgrupo/chess/pieces/images/"
+					+ piece.getClass().getSimpleName() + piece.getColor() + ".png"));
 		}
 
 		void update(ChessMatch chessMatch, boolean[][] possibleMoves) {

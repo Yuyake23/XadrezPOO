@@ -82,11 +82,4 @@ public class Pawn extends ChessPiece {
 		return pm;
 	}
 
-	@Override
-	public String getImagePath() {
-		if(color == Color.BLACK)
-			return "images/PeaoPreto.png";
-		else 
-			return "images/PeaoBranco.png";
-	}
 }

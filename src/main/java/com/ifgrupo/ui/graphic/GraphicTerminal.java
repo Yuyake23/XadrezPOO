@@ -32,7 +32,6 @@ public class GraphicTerminal extends Terminal {
 		}
 		String r = frame.returnString;
 		frame.returnString = null;
-		System.out.println(r);
 		return r;
 	}
 

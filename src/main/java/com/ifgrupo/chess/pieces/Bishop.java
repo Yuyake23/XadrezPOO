@@ -63,12 +63,5 @@ public class Bishop extends ChessPiece {
 
 		return pm;
 	}
-	
-	@Override
-	public String getImagePath() {
-		if(color == Color.BLACK)
-			return "images/BispoPreto.png";
-		else 
-			return "images/BispoBranco.png";
-	}
+
 }
