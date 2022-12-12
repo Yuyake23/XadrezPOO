@@ -15,28 +15,23 @@ public class GraphicTerminal extends Terminal {
 	private Frame frame;
 	Semaphore sem = new Semaphore(1);
 
-	public GraphicTerminal(Color playerColor, String name) {
-		super(playerColor, name);
+	public GraphicTerminal(Color playerColor) {
+		super(playerColor);
 
 		this.frame = new Frame(sem);
 	}
 
 	@Override
 	public String readSourcePosition() {
-		try {
-			sem.acquire();
-			sem.acquire();
-			sem.release();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		String r = frame.returnString;
-		frame.returnString = null;
-		return r;
+		return waitValue();
 	}
 
 	@Override
 	public String readTargetPosition() {
+		return waitValue() + " Q";
+	}
+
+	private String waitValue() {
 		try {
 			sem.acquire();
 			sem.acquire();
@@ -61,6 +56,7 @@ public class GraphicTerminal extends Terminal {
 
 	@Override
 	public void finish(ChessMatch chessMatch, List<ChessPiece> capturedPieces, Color winner) {
+		this.update(chessMatch, capturedPieces, null);
 		JOptionPane.showMessageDialog(frame,
 				"FIM DO JOGO\n%s".formatted(winner == null ? "Empate!" : "Vencedor: " + winner));
 		this.frame.dispose();

@@ -14,7 +14,7 @@ import com.ifgrupo.boardgame.Piece;
 import com.ifgrupo.boardgame.Position;
 import com.ifgrupo.chess.pieces.*;
 
-public class ChessMatch implements Serializable {
+public class ChessMatch implements Serializable, Cloneable {
 	@Serial
 	private static final long serialVersionUID = 2272696391384483565L;
 
@@ -366,6 +366,17 @@ public class ChessMatch implements Serializable {
 
 	public Color getWinner() {
 		return currentPlayerColor;
+	}
+
+	@Override
+	public ChessMatch clone(){
+		try {
+			return (ChessMatch) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	private void initialSetup() {

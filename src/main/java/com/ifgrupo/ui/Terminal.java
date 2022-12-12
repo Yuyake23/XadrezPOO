@@ -11,9 +11,8 @@ public abstract class Terminal {
 	protected String name;
 	protected Color playerColor;
 
-	public Terminal(Color playerColor, String name) {
+	public Terminal(Color playerColor) {
 		this.playerColor = playerColor;
-		this.name = name;
 	}
 
 	public abstract String readSourcePosition();

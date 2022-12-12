@@ -149,18 +149,16 @@ public class Program {
 		try {
 			Terminal localTerminal = null;
 			String socket = args[1];
-			String name = null;
 			if (!args[2].equalsIgnoreCase("-p2")) {
 				System.out.println("-nc ip:porta -p2 (-b or -g) name");
 				System.exit(1);
 			} else {
-				name = args[4];
 				if (args[3].equalsIgnoreCase("-b")) {
-					localTerminal = new BashTerminal(Color.BLACK, name);
+					localTerminal = new BashTerminal(Color.BLACK);
 				} else if (args[3].equalsIgnoreCase("-g")) {
-					localTerminal = new GraphicTerminal(Color.BLACK, name);
+					localTerminal = new GraphicTerminal(Color.BLACK);
 				} else if (args[3].equalsIgnoreCase("-a")) {
-					localTerminal = new AITerminal(Color.BLACK, 5, name);
+					localTerminal = new AITerminal(Color.BLACK);
 				} else {
 					System.out.println("-nc ip:porta -p2 (-b or -g) name");
 					System.exit(1);
@@ -183,9 +181,9 @@ public class Program {
 
 	private static void configureNetworkGameAsHost(String[] args) {
 		if (args[1].equalsIgnoreCase("-p1") && args[2].equalsIgnoreCase("-b")) {
-			Program.whitePlayer = new BashTerminal(Color.WHITE, args[3]);
+			Program.whitePlayer = new BashTerminal(Color.WHITE);
 		} else if (args[2].equalsIgnoreCase("-g")) {
-			Program.whitePlayer = new GraphicTerminal(Color.WHITE, args[3]);
+			Program.whitePlayer = new GraphicTerminal(Color.WHITE);
 		} else {
 			System.out.println("-p1 (-b or -g) namePlayer1");
 			System.exit(1);
@@ -199,7 +197,7 @@ public class Program {
 			Socket client = host.accept();
 			System.out.println("Cliente conectado: " + client.getInetAddress().getHostAddress());
 
-			Program.blackPlayer = new NetworkTerminal(Color.BLACK, "", host, client);
+			Program.blackPlayer = new NetworkTerminal(Color.BLACK, host, client);
 
 			Program.game = new HostGame(whitePlayer, blackPlayer);
 		} catch (IOException e) {
@@ -216,10 +214,10 @@ public class Program {
 					i++;
 					if (args[i].equalsIgnoreCase("-b")) {
 						i++;
-						Program.whitePlayer = new BashTerminal(Color.WHITE, args[i]);
+						Program.whitePlayer = new BashTerminal(Color.WHITE);
 					} else if (args[i].equalsIgnoreCase("-g")) {
 						i++;
-						Program.whitePlayer = new GraphicTerminal(Color.WHITE, args[i]);
+						Program.whitePlayer = new GraphicTerminal(Color.WHITE);
 					} else {
 						System.out.println("-p1 (-b or -g) namePlayer1 -p2 (-b or -g) namePlayer2");
 					}

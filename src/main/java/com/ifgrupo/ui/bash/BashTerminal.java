@@ -12,8 +12,8 @@ import com.ifgrupo.ui.Terminal;
 public class BashTerminal extends Terminal {
 	private Scanner sc;
 
-	public BashTerminal(Color playerColor, String name) {
-		super(playerColor, name);
+	public BashTerminal(Color playerColor) {
+		super(playerColor);
 		this.sc = new Scanner(System.in);
 	}
 

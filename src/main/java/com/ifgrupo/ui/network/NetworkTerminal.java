@@ -21,8 +21,8 @@ public class NetworkTerminal extends Terminal {
 	private ObjectOutputStream saida;
 	private ObjectInputStream entrada;
 
-	public NetworkTerminal(Color playerColor, String name, ServerSocket host, Socket client) {
-		super(playerColor, name);
+	public NetworkTerminal(Color playerColor, ServerSocket host, Socket client) {
+		super(playerColor);
 		this.host = host;
 		this.client = client;
 		try {

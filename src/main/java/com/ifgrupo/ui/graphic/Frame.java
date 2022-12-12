@@ -33,6 +33,7 @@ public class Frame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // fechar quando clicar no X
 		this.setLocationRelativeTo(null);
 		this.setPreferredSize(new Dimension(W, H));
+		this.setResizable(false);
 
 		this.board = new Board();
 
@@ -77,7 +78,7 @@ public class Frame extends JFrame {
 			for (int i = 0; i < pieces.length; i++) {
 				for (int j = 0; j < pieces[i].length; j++) {
 					if (pieces[i][j] != null) {
-						this.pieces[i][j].setIcon(extracted(pieces[i][j]));
+						this.pieces[i][j].setIcon(imageOf(pieces[i][j]));
 					} else {
 						this.pieces[i][j].setIcon(null);
 					}
@@ -91,7 +92,7 @@ public class Frame extends JFrame {
 			this.setLayout(this.boardLayout);
 		}
 
-		private ImageIcon extracted(ChessPiece piece) {
+		private ImageIcon imageOf(ChessPiece piece) {
 			return new ImageIcon(getClass().getResource("/com/ifgrupo/chess/pieces/images/"
 					+ piece.getClass().getSimpleName() + piece.getColor() + ".png"));
 		}
